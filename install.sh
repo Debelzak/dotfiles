@@ -73,7 +73,7 @@ status_message() {
     animation_pid=$!
 
     # Executa o comando
-    eval "command $command" >> $script_dir/install.log 2>&1
+    eval "$command" >> $script_dir/install.log 2>&1
     command_status=$?
 
     # Encerra a animação
