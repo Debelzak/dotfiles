@@ -1,24 +1,16 @@
-#!/bin/bash
+#!/bin/sh
 no_prompt=0
 
-echo -e 'Acesso root necessário para instalar os pacotes.'
-sudo clear
-
 for param in "$@"; do
-    echo ${param};
     if [ "${param}" == "--no-prompt" ]; then
         no_prompt=1
     fi
 done
 
-cleanup() {
-    echo -en "\r\033[KFinalizando script..."
-    echo -e "\033[?25h"  # Restaura o cursor
-}
-trap cleanup EXIT
+# Get sudo
+echo -e 'Acesso root necessário para instalar os pacotes.'
+sudo clear
 
-# Esconde o cursor
-echo -e "\033[?25l"
 echo -e "
   _____        _    __ _ _           
  |  __ \      | |  / _(_) |          
@@ -31,13 +23,13 @@ echo -e "
 "
 
 #######################################
-############ Util functions ###########
+############ Helper functions #########
 #######################################
 message() {
     message_type=$1
     message_text=$2
     if [ "${message_type}" == "error" ]; then
-         echo -e "[\033[0;31mFAILED\033[0m] $message_text"
+         echo -e "[\033[0;31mFALHOU\033[0m] $message_text"
     elif [ "${message_type}" == "ok" ]; then
          echo -e "[  \033[0;32mOK\033[0m  ] $message_text"
     elif [ "${message_type}" == "info" ]; then
@@ -52,7 +44,7 @@ status_message() {
     command=$2
 
     message_length=${#message_text}
-    loading_animation="[    ]"
+    loading_animation="[      ]"
 
     loading_animation() {
         local delay=0.25
@@ -75,6 +67,9 @@ status_message() {
         done
     }
 
+    # Esconde o cursor
+    echo -en "\033[?25l"
+
     # Inicia a animação em segundo plano
     loading_animation &
     animation_pid=$!
@@ -87,12 +82,14 @@ status_message() {
     kill $animation_pid
     wait $animation_pid 2>/dev/null
 
+    # Restaura cursor
+    echo -en "\033[?25h"
+
     if [ $command_status -eq 0 ]; then
         echo -e "\r[  \033[0;32mOK\033[0m  ] $message_text"
     else
-        echo -e "\r[\033[0;31mFAILED\033[0m] $message_text"
-        message "error" "[FAILED] A instalação não pôde ser finalizada. Confira o arquivo install.log para mais detalhes."
-        echo -e "\033[?25h"
+        echo -e "\r[\033[0;31mFALHOU\033[0m] $message_text"
+        message "error" "A instalação não pôde ser finalizada. Confira o arquivo [$script_dir/install.log] para mais detalhes."
         exit 1
     fi
 }
@@ -107,19 +104,80 @@ prompt() {
 #######################################
 # Diretório atual do script
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+distro_id="unknown"
+distro_name="unknown"
 
-# Reset logo file
-echo "" > $script_dir/install.log
-
-## Prompt
-if [ "${no_prompt}" != 1 ]; then
-    message "info" "Os arquivos de configurações serão instalados utilizando este diretório: $script_dir. Após a conclusão, não será possível mover o diretório para outra localização."
-    prompt "Deseja continuar? [Y/n]: "
-    read continue
-    if [ "$continue" == "n" ]; then
-        exit 0;
+detect_distro() {
+    if [ ! -f /etc/os-release ]; then 
+        echo -e "O arquivo /etc/os-release não está disponível. Não é possível determinar a distribuição Linux."
+        return 1
     fi
-fi
+
+    source /etc/os-release
+    if [ -z "$ID" ]; then
+        echo -e "Não foi possível determinar a distribuição Linux."
+        return 1
+    fi
+
+    distro_id=$ID
+    distro_name=$NAME
+
+    return 0
+}
+
+check_distro_compatibility() {
+    local compatible_distros=("arch")
+
+    for comp_distro in "${compatible_distros[@]}"; do
+        [ "$distro_id" = "$comp_distro" ] && return 0
+    done
+
+    echo -e "Você está usando uma distribuição incompatível com esse script: $distro_name" >> $script_dir/install.log
+
+    return 1
+}
+
+check_internet_connection() {
+    ping -c 1 google.com > /dev/null 2>&1 && return 0 || return 1;
+}
+
+install_packages_arch() {
+    status_message "Atualizando mirrorlist..." "sudo pacman -Syy"
+
+    # Lista de pacotes a serem instalados
+    packages=(
+        pkgconf                 #eww build
+        gcc                     #eww build
+        cargo-nightly           #eww build
+        gtk3 gtk-layer-shell    #eww runtime
+        xorg
+        xorg-xinit
+        xdotool
+        i3-wm
+        alacritty
+        picom
+        nitrogen
+        git
+        rofi
+        dunst
+        ttf-font-awesome
+        ttf-meslo-nerd
+        nodejs
+        npm
+        pavucontrol
+        flameshot
+        # arc-gtk-theme arc-icon-theme lxappearance
+        # feh
+        # mplayer
+    )
+
+    # Loop para instalar cada pacote
+    for package in "${packages[@]}"; do
+        status_message "Instalando pacote ${package}..." "sudo pacman -Sq --noconfirm $package"
+    done
+
+    message "ok" "Todos os pacotes foram instalados com sucesso!"
+}
 
 create_links() {
     # Diretório de destino para os links simbólicos
@@ -138,46 +196,12 @@ create_links() {
             fi
         fi
 
-        status_message "Configurando ${FUNCNAME[1]}..." "rm -rf '$target'; ln -sf '$source' '$target'"
+        directory=$(dirname $target)
+        status_message "Configurando ${FUNCNAME[1]}..." "rm -rf '$target'; mkdir -p '$directory'; ln -sf '$source' '$target'"
     else
         message "error" "Configurações do alvo ${FUNCNAME[1]} não foram encontradas! [$source]"
-        message "error" "Finalizando script."
         exit 1
     fi
-}
-
-install_packages_arch() {
-    status_message "Updating mirrorlist..." "sudo pacman -Syy"
-
-    # Lista de pacotes a serem instalados
-    packages=(
-        xorg
-        xorg-xinit
-        xdotool
-        i3-wm
-        alacritty
-        picom
-        nitrogen
-        cargo-nightly           #eww compile requirement
-        gtk3 gtk-layer-shell    #eww requirement
-        rofi
-        dunst
-        ttf-font-awesome
-        nodejs
-        npm
-        pavucontrol
-        flameshot
-        # arc-gtk-theme arc-icon-theme lxappearance
-        # feh
-        # mplayer
-    )
-
-    # Loop para instalar cada pacote
-    for package in "${packages[@]}"; do
-        status_message "Installing package ${package}..." "sudo pacman -Sq --noconfirm $package"
-    done
-
-    message "ok" "All packages installed successfully!"
 }
 
 ##### ~/
@@ -220,13 +244,8 @@ picom() {
 eww() {
     # build
     cd "$script_dir/eww/src"
-
-    cmd="cargo build --release --no-default-features --features=x11"
-    status_message "Compilando pacote EWW... Isso pode demorar um pouco." "$cmd"
-
-    cmd="sudo install -vDm755 target/release/eww -t '/usr/bin/'"
-    status_message "Instalando pacote EWW..." "$cmd"
-
+    status_message "Compilando Elkowars Wacky Widgets (EWW)... Isso deve levar um tempo." "cargo build --release --no-default-features --features=x11"
+    status_message "Instalando Elkowars Wacky Widgets (EWW)..." "sudo install -vDm755 target/release/eww -t '/usr/bin/'"
     cd "$script_dir"
 
     # setup links
@@ -243,15 +262,52 @@ rofi() {
     create_links "$source_dir" "$target_dir"
 }
 
-
 ##### Tasks
-install_packages_arch
-user_dirs
-xinit
-Alacritty
-i3wm
-picom
-eww
-rofi
+pre_install() {
+    # Reset logo file
+    echo "" > $script_dir/install.log
 
-message "ok" "Instalação finalizada com sucesso!"
+    ## Prompt
+    message "info" "Os arquivos de configurações serão instalados utilizando este diretório: [$script_dir]. Após a conclusão, não será possível mover o diretório para outra localização."
+    if [ "${no_prompt}" != 1 ]; then
+        prompt "Deseja continuar? [Y/n]: "
+        read continue
+        if [ "$continue" == "n" ]; then
+            exit 0;
+        fi
+    fi
+
+    # Detect distro
+    status_message "Detectando distribuição linux..." "detect_distro"
+    status_message "Checando compatibilidade com distribuição..." "check_distro_compatibility"
+    message "ok" "Você está usando uma distribuição compatível: $distro_name"
+
+    # Check internet connection
+    status_message "Checando conexão com a internet..." "check_internet_connection"
+
+    if [ "$distro_id" = "arch" ]; then
+        install_packages_arch
+    fi
+
+    # Fetch git submodules
+    status_message "Inicializando submódulos git..." "git submodule init"
+    status_message "Atualizando submódulos git..." "git submodule update"
+}
+
+install() {
+    user_dirs
+    xinit
+    Alacritty
+    i3wm
+    picom
+    eww
+    rofi
+}
+
+post_install() {
+    message "ok" "Instalação finalizada com sucesso!"
+}
+
+pre_install
+install
+post_install
