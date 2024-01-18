@@ -1,0 +1,127 @@
+* {
+    all: unset; //Unsets everything so you can style everything from scratch
+    font-family: "Noto Sans CJK JP";
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+//Global Styles
+.bar {
+    background-color: transparent;
+    margin: 10px 10px 0px 10px;
+}
+
+.container {
+    background-color: $background;
+    color: $text;
+    padding: 3px;
+    border-radius: 7px;
+}
+
+// Styles on classes (see eww.yuck for more information)
+.right slider {
+    all: unset;
+    color: #ffd5cd;
+}
+
+.metric scale trough highlight {
+    all: unset;
+    background-color: #D35D6E;
+    color: #000000;
+    border-radius: 10px;
+}
+.metric scale trough {
+    all: unset;
+    background-color: #4e4e4e;
+    border-radius: 50px;
+    min-height: 3px;
+    min-width: 50px;
+    margin-left: 10px;
+    margin-right: 20px;
+}
+    .metric scale trough highlight {
+    all: unset;
+    background-color: #D35D6E;
+    color: #000000;
+    border-radius: 10px;
+}
+.metric scale trough {
+    all: unset;
+    background-color: #4e4e4e;
+    border-radius: 50px;
+    min-height: 3px;
+    min-width: 50px;
+    margin-left: 10px;
+    margin-right: 20px;
+}
+
+.button {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    min-height: 2rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.button:hover{
+    background-color: $button_hover;
+}
+
+.button:active {
+    background-color: $button_active;
+}
+
+.workspaces .button {
+    padding-left: .65rem;
+    padding-right: .65rem;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+.workspaces .button.selected {
+    color: $text_clearest;
+    background-color: $button_active;
+}
+
+.workspaces .selected:hover {
+    color: $text_clearest;
+    background-color: $button_active;
+}
+
+.focused_window {
+    margin-left: 15px;
+}
+
+.awesome_icon {
+    font-family: "Font Awesome 6 Free";
+    font-size: 13pt;
+    font-weight: bold;
+}
+
+.os_icon {
+    font-family: "MesloLGS NF";
+    color: $text_clearest;
+    font-size: 20pt;
+    font-weight: bold;
+}
+
+.power_menu {
+    color: $text_clearest;
+}
+
+.power_menu_buttons {
+    background-color: $foreground;
+    border-radius: 4px;
+}
+
+.power_menu_buttons .poweroff {
+    color: $error
+}
+
+.power_menu_buttons .reboot {
+    color: $success
+}
+
+.power_menu_buttons .suspend {
+    color: $warning
+}

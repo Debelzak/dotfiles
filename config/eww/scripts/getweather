@@ -1,0 +1,5 @@
+#/bin/sh
+export LOCATION="Padre Miguel"
+export API_KEY="9a030f6e1d3d9cec1edbef9ed9713081"
+
+node "$(dirname $0)/weather/"

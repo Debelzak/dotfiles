@@ -1,0 +1,8 @@
+(deflisten workspaces_status :initial '[]' "scripts/wm_getworkspaces")
+(defwidget workspaces []
+  (box :class "workspaces" :spacing "3"
+    (for entry in "${workspaces_status}"
+      (button :class {entry.focused ? "button selected" : "button"} :onclick "i3-msg workspace ${entry.num} > /dev/null" "${WS_NAMES[(entry.num - 1)]}")
+    )
+  )
+)

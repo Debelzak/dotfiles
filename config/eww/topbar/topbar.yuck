@@ -1,0 +1,82 @@
+;; Modules
+(include "topbar/modules/power_menu.yuck")
+(include "topbar/modules/system_resources.yuck")
+(include "topbar/modules/weather.yuck")
+(include "topbar/modules/date.yuck")
+(include "topbar/modules/os_button.yuck")
+(include "topbar/modules/workspaces.yuck")
+(include "topbar/modules/focused_window.yuck")
+
+(defvar WS_NAMES '[
+    "一",
+    "二",
+    "三",
+    "四",
+    "五",
+    "六",
+    "七",
+    "八",
+    "九",
+    "十"
+  ]'
+)
+
+;; Window
+(defwindow bar
+  :monitor 0
+  :windowtype "dock"
+  :stacking "fg"
+  :geometry (geometry :x "0%"
+                      :y "0%"
+                      :width "100%"
+                      :height "55px"
+                      :anchor "top center")
+  :reserve (struts :side "top" :distance "4%")
+  :wm-ignore false
+  (bar)
+)
+
+
+;; Bars
+(defwidget bar []
+  (centerbox 
+    :class "container"
+    :orientation "h"
+    (left)
+    (center)
+    (right)
+  )
+)
+
+;; Left bar
+(deflisten workspaces :initial '[]' "scripts/workspace_manager")
+(defwidget left []
+  (box :class "left" :orientation "h" :space-evenly false :halign "start" :spacing 3
+    (os_button)
+    (workspaces)
+    (focused_window)
+  )
+)
+
+;; Center bar
+(defwidget center []
+  (box :class "center" :orientation "h" :space-evenly false :halign "center" :spacing 10
+    (weather)
+    (date)
+  )
+)
+
+;; Right bar
+(defwidget right []
+  (box :class "right" :orientation "h" :space-evenly false :halign "end" :spacing 10
+    (system_resources)
+    (power_menu)
+  )
+)
+
+
+;(deflisten music :initial "" "playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
+;(defpoll volume :interval "1s" "scripts/getvol")
+;(metric :label "🔊" :value volume :onchange "pactl -- set-sink-volume 0 {}%")
+;(metric :label "" :value {EWW_RAM.used_mem_perc} :onchange "")
+;(metric :label "💾" :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)} :onchange "")

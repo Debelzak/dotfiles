@@ -1,0 +1,13 @@
+#!/bin/bash
+echo '{"window_title":""}'
+i3-msg -t subscribe -m '["window","workspace"]' | while read -r line; do
+    # Obter o ID da janela focada
+    window_id=$(xprop -root | grep "_NET_ACTIVE_WINDOW(WINDOW):" | awk '{print $5}')
+
+    if [ "$window_id" == "0x0" ]; then
+        echo '{"window_title":""}'
+    else
+        window_title=$(xdotool getwindowname $window_id)
+        echo '{"window_title":"'$window_title'"}'
+    fi
+done
