@@ -161,7 +161,7 @@ install_packages_arch() {
         dunst
         noto-fonts-cjk
         ttf-font-awesome
-        ttf-meslo-nerd
+        #ttf-meslo-nerd         # substituido pelas fontes locais
         nodejs
         npm
         pavucontrol
@@ -202,6 +202,15 @@ create_links() {
         message "error" "Configurações do alvo ${FUNCNAME[1]} não foram encontradas! [$source]"
         exit 1
     fi
+}
+
+##### Fonts
+fonts() {
+    #font_dir=/usr/share/fonts/TTF/
+    font_dir=$HOME/.local/share/fonts/
+
+    mkdir -p "$font_dir"
+    status_message "Instalando fontes..." "cp -r '$script_dir/fonts/' '$font_dir'"
 }
 
 ##### ~/
@@ -304,6 +313,7 @@ pre_install() {
 }
 
 install() {
+    fonts
     user_dirs
     xinit
     Alacritty
