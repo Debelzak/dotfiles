@@ -47,9 +47,7 @@ status_message() {
     loading_animation="[      ]"
 
     loading_animation() {
-        local delay=0.25
         local count=0
-        local max_dots=3
 
         while true; do
             case $count in
@@ -61,7 +59,7 @@ status_message() {
                 *) count=-1 ;;
             esac
 
-            sleep $delay
+            sleep 0.25
             count=$((count + 1))
             printf "\r"
         done
@@ -75,7 +73,7 @@ status_message() {
     animation_pid=$!
 
     # Executa o comando
-    eval $command >> $script_dir/install.log 2>&1
+    eval "command $command" >> $script_dir/install.log 2>&1
     command_status=$?
 
     # Encerra a animação
@@ -149,7 +147,8 @@ install_packages_arch() {
         pkgconf                 #eww build
         gcc                     #eww build
         cargo-nightly           #eww build
-        gtk3 gtk-layer-shell    #eww runtime
+        gtk3                    #eww runtime
+        gtk-layer-shell         #eww runtime (wayland)
         xorg
         xorg-xinit
         xdotool
@@ -160,6 +159,7 @@ install_packages_arch() {
         git
         rofi
         dunst
+        noto-fonts-cjk
         ttf-font-awesome
         ttf-meslo-nerd
         nodejs
@@ -262,6 +262,15 @@ rofi() {
     create_links "$source_dir" "$target_dir"
 }
 
+nitrogen() {
+    target_dir="$HOME/.config/nitrogen"
+    status_message "Configurando papel de parede..." "mkdir -p '$target_dir'"
+    echo "[xin_-1]"                             >  "$target_dir/bg-saved.cfg"
+    echo "file=$script_dir/wallpaper/1.jpeg"    >> "$target_dir/bg-saved.cfg"
+    echo "mode=4"                               >> "$target_dir/bg-saved.cfg"
+    echo "bgcolor=#000000"                      >> "$target_dir/bg-saved.cfg"
+}
+
 ##### Tasks
 pre_install() {
     # Reset logo file
@@ -302,6 +311,7 @@ install() {
     picom
     eww
     rofi
+    nitrogen
 }
 
 post_install() {
