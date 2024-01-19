@@ -7,20 +7,6 @@
 (include "topbar/modules/workspaces.yuck")
 (include "topbar/modules/focused_window.yuck")
 
-(defvar WS_NAMES '[
-    "一",
-    "二",
-    "三",
-    "四",
-    "五",
-    "六",
-    "七",
-    "八",
-    "九",
-    "十"
-  ]'
-)
-
 ;; Window
 (defwindow bar
   :monitor 0

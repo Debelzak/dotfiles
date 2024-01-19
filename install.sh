@@ -9,7 +9,7 @@ done
 
 # Get sudo
 echo -e 'Acesso root necessário para instalar os pacotes.'
-sudo clear
+sudo clear;
 
 echo -e "
   _____        _    __ _ _           
@@ -29,11 +29,11 @@ message() {
     message_type=$1
     message_text=$2
     if [ "${message_type}" == "error" ]; then
-         echo -e "[\033[0;31mFALHOU\033[0m] $message_text"
-    elif [ "${message_type}" == "ok" ]; then
+         echo -e "[\033[0;31mFALHA!\033[0m] $message_text"
+    elif [ "${message_type}" == "success" ]; then
          echo -e "[  \033[0;32mOK\033[0m  ] $message_text"
-    elif [ "${message_type}" == "info" ]; then
-         echo -e "[ \033[0;33mINFO\033[0m ] $message_text"
+    elif [ "${message_type}" == "warning" ]; then
+         echo -e "[ \033[0;33mWARN\033[0m ] $message_text"
     else
          echo -e "${message_text}"
     fi
@@ -51,12 +51,10 @@ status_message() {
 
         while true; do
             case $count in
-                0) echo -n "[      ] $message_text" ;;
-                1) echo -n "[ .    ] $message_text" ;;
-                2) echo -n "[ ..   ] $message_text" ;;
-                3) echo -n "[ ...  ] $message_text" ;;
-                4) echo -n "[ .... ] $message_text" ;;
-                *) count=-1 ;;
+                0) echo -n "[ >    ] $message_text" ;;
+                1) echo -n "[ >>   ] $message_text" ;;
+                2) echo -n "[ >>>  ] $message_text" ;;
+                3) echo -n "[ >>>> ] $message_text"; count=-1;;
             esac
 
             sleep 0.25
@@ -86,7 +84,7 @@ status_message() {
     if [ $command_status -eq 0 ]; then
         echo -e "\r[  \033[0;32mOK\033[0m  ] $message_text"
     else
-        echo -e "\r[\033[0;31mFALHOU\033[0m] $message_text"
+        echo -e "\r[\033[0;31mFALHA!\033[0m] $message_text"
         message "error" "A instalação não pôde ser finalizada. Confira o arquivo [$script_dir/install.log] para mais detalhes."
         exit 1
     fi
@@ -144,7 +142,7 @@ install_packages_arch() {
 
     # Lista de pacotes a serem instalados
     packages=(
-        pkgconf                 #eww build
+        pkg-config              #eww build
         gcc                     #eww build
         cargo-nightly           #eww build
         gtk3                    #eww runtime
@@ -176,7 +174,7 @@ install_packages_arch() {
         status_message "Instalando pacote ${package}..." "sudo pacman -Sq --noconfirm $package"
     done
 
-    message "ok" "Todos os pacotes foram instalados com sucesso!"
+    message "success" "Todos os pacotes foram instalados com sucesso!"
 }
 
 create_links() {
@@ -253,8 +251,8 @@ picom() {
 eww() {
     # build
     cd "$script_dir/eww/src"
-    status_message "Compilando Elkowars Wacky Widgets (EWW)... Isso deve levar um tempo." "cargo build --release --no-default-features --features=x11"
-    status_message "Instalando Elkowars Wacky Widgets (EWW)..." "sudo install -vDm755 target/release/eww -t '/usr/bin/'"
+    status_message "Compilando eww... Isso deve levar um tempo." "cargo build --release --no-default-features --features=x11"
+    status_message "Instalando eww..." "sudo install -vDm755 target/release/eww -t '/usr/bin/'"
     cd "$script_dir"
 
     # setup links
@@ -286,7 +284,7 @@ pre_install() {
     echo "" > $script_dir/install.log
 
     ## Prompt
-    message "info" "Os arquivos de configurações serão instalados utilizando este diretório: [$script_dir]. Após a conclusão, não será possível mover o diretório para outra localização."
+    message "warning" "Os arquivos de configurações serão instalados utilizando este diretório: [$script_dir]. Após a conclusão, não será possível mover o diretório para outra localização."
     if [ "${no_prompt}" != 1 ]; then
         prompt "Deseja continuar? [Y/n]: "
         read continue
@@ -298,14 +296,16 @@ pre_install() {
     # Detect distro
     status_message "Detectando distribuição linux..." "detect_distro"
     status_message "Checando compatibilidade com distribuição..." "check_distro_compatibility"
-    message "ok" "Você está usando uma distribuição compatível: $distro_name"
+    message "success" "Você está usando uma distribuição compatível: $distro_name"
 
     # Check internet connection
     status_message "Checando conexão com a internet..." "check_internet_connection"
 
-    if [ "$distro_id" = "arch" ]; then
-        install_packages_arch
-    fi
+    case $distro_id in
+        arch)
+            install_packages_arch
+        ;;
+    esac
 
     # Fetch git submodules
     status_message "Inicializando submódulos git..." "git submodule init"
@@ -325,7 +325,7 @@ install() {
 }
 
 post_install() {
-    message "ok" "Instalação finalizada com sucesso!"
+    message "success" "Instalação finalizada com sucesso!"
 }
 
 pre_install

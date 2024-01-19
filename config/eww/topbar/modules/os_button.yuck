@@ -1,5 +1,5 @@
 (defwidget os_button []
-  (button :class "button" :onclick "rofi -show run ; sleep 0.1"
+  (button :class "button" :onclick "rofi -show drun ; sleep 0.1"
     (label :class "os_icon" :text "󰣇")
   )
 )
