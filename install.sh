@@ -1,6 +1,6 @@
 #!/bin/sh
+# Get params
 no_prompt=0
-
 for param in "$@"; do
     if [ "${param}" == "--no-prompt" ]; then
         no_prompt=1
@@ -8,15 +8,15 @@ for param in "$@"; do
 done
 
 # Get sudo
-echo -e 'Acesso root necessário para instalar os pacotes.'
+printf 'Acesso root necessário para instalar os pacotes.\n'
 command -v sudo &> /dev/null
 if [ ! $? -eq 0 ]; then
-    echo -e "\033[0;31mO pacote necessário (sudo) não foi encontrado no sistema.\033[0m"
+    printf "${RED}O pacote necessário (sudo) não foi encontrado no sistema.${NC}\n"
     exit 1
 fi
 sudo clear;
 
-echo -e "
+printf "
   _____        _    __ _ _           
  |  __ \      | |  / _(_) |          
  | |  | | ___ | |_| |_ _| | ___  ___ 
@@ -25,28 +25,32 @@ echo -e "
  |_____/ \___/ \__|_| |_|_|\___||___/
                                      
             By Debelzak
-"
-
+\n"
 #######################################
 ############ Helper functions #########
 #######################################
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+CYAN='\033[0;36m'
+NC='\033[0m'  # No Color
+HIDE_CURSOR='\033[?25l'
+SHOW_CURSOR='\033[?25h'
 message() {
-    message_type=$1
-    message_text=$2
-    if [ "${message_type}" == "error" ]; then
-         echo -e "[\033[0;31mFALHA!\033[0m] $message_text"
-    elif [ "${message_type}" == "success" ]; then
-         echo -e "[  \033[0;32mOK\033[0m  ] $message_text"
-    elif [ "${message_type}" == "warning" ]; then
-         echo -e "[ \033[0;33mWARN\033[0m ] $message_text"
-    else
-         echo -e "${message_text}"
-    fi
+    local message_type="$1"
+    local message_text="$2"
+
+    case "$message_type" in
+        error)   printf "[${RED}FALHA!${NC}] %s\n" "$message_text" ;;
+        success) printf "[  ${GREEN}OK${NC}  ] %s\n" "$message_text" ;;
+        warning) printf "[ ${YELLOW}WARN${NC} ] %s\n" "$message_text" ;;
+        *)       printf "%s\n" "$message_text" ;;
+    esac
 }
 
 status_message() {
-    message_text=$1
-    command=$2
+    local message_text="$1"
+    local command="$2"
 
     message_length=${#message_text}
     loading_animation="[      ]"
@@ -56,10 +60,10 @@ status_message() {
 
         while true; do
             case $count in
-                0) echo -n "[ >    ] $message_text" ;;
-                1) echo -n "[ >>   ] $message_text" ;;
-                2) echo -n "[ >>>  ] $message_text" ;;
-                3) echo -n "[ >>>> ] $message_text"; count=-1;;
+                0) printf "[ ${YELLOW}>${NC}    ] %s" "$message_text" ;;
+                1) printf "[ ${YELLOW}>>${NC}   ] %s" "$message_text" ;;
+                2) printf "[ ${YELLOW}>>>${NC}  ] %s" "$message_text" ;;
+                3) printf "[ ${YELLOW}>>>>${NC} ] %s" "$message_text"; count=-1;;
             esac
 
             sleep 0.25
@@ -69,7 +73,7 @@ status_message() {
     }
 
     # Esconde o cursor
-    echo -en "\033[?25l"
+    printf "$HIDE_CURSOR"
 
     # Inicia a animação em segundo plano
     loading_animation &
@@ -84,12 +88,12 @@ status_message() {
     wait $animation_pid 2>/dev/null
 
     # Restaura cursor
-    echo -en "\033[?25h"
+    printf "$SHOW_CURSOR"
 
     if [ $command_status -eq 0 ]; then
-        echo -e "\r[  \033[0;32mOK\033[0m  ] $message_text"
+        printf "\r[  ${GREEN}OK${NC}  ] %s\n" "$message_text"
     else
-        echo -e "\r[\033[0;31mFALHA!\033[0m] $message_text"
+        printf "\r[${RED}FALHA!${NC}] %s\n" "$message_text"
         message "error" "A instalação não pôde ser finalizada. Confira o arquivo [$install_dir/install.log] para mais detalhes."
         exit 1
     fi
@@ -97,7 +101,7 @@ status_message() {
 
 prompt() {
     message_text=$1
-    echo -en "\033[0;36m$message_text\033[0m"
+    printf "${CYAN}$message_text${NC}"
 }
 
 #######################################
@@ -107,15 +111,19 @@ prompt() {
 install_dir="$HOME/dotfiles"
 if [ "${no_prompt}" != 1 ]; then
     prompt "Diretório de instalação: [$install_dir]: "
+
     read directory
-    if [ -n "$directory" ]; then
-        if mkdir -p "$directory" && touch "$directory/foo.test" 2> /dev/null; then
-            rm "$directory/foo.test"
-            install_dir="$directory"
-        else
-            echo "Você não possui permissões para escrever neste caminho."
-            exit 1
-        fi
+    if [ -z "$directory" ]; then
+        directory=$install_dir
+    fi
+
+    if mkdir -p "$directory" && touch "$directory/foo.test" 2> /dev/null; then
+        rm "$directory/foo.test"
+        message "success" "Diretório de instalação definido em [$directory]."
+        install_dir="$directory"
+    else
+        message "error" "Você não possui permissões para escrever em [$directory]."
+        exit 1
     fi
 fi
 
@@ -126,13 +134,13 @@ distro_name="unknown"
 
 detect_distro() {
     if [ ! -f /etc/os-release ]; then 
-        echo -e "O arquivo /etc/os-release não está disponível. Não é possível determinar a distribuição Linux."
+        printf "O arquivo /etc/os-release não está disponível. Não é possível determinar a distribuição Linux.\n"
         return 1
     fi
 
     source /etc/os-release
     if [ -z "$ID" ]; then
-        echo -e "Não foi possível determinar a distribuição Linux."
+        printf "Não foi possível determinar a distribuição Linux.\n"
         return 1
     fi
 
@@ -149,7 +157,7 @@ check_distro_compatibility() {
         [ "$distro_id" = "$comp_distro" ] && return 0
     done
 
-    echo -e "Você está usando uma distribuição incompatível com esse script: $distro_name" >> $install_dir/install.log
+    printf "Você está usando uma distribuição incompatível com esse script: $distro_name\n"
 
     return 1
 }
@@ -238,6 +246,8 @@ xinit() {
     target_file="$HOME/.xinitrc"
 
     create_links "$source_file" "$target_file"
+
+    status_message "Criando entrada xdesktop..." "sudo cp -f $install_dir/xinit.desktop /usr/share/xsessions/xinit.desktop"
 }
 
 ##### ~/.config/
@@ -272,7 +282,7 @@ picom() {
 eww() {
     # build
     cd "$install_dir/eww/src"
-    status_message "Compilando eww... Isso deve levar um tempo." "cargo build --release --no-default-features --features=x11"
+    status_message "Compilando eww. Isso deve levar um tempo..." "cargo build --release --no-default-features --features=x11"
     status_message "Instalando eww..." "sudo install -vDm755 target/release/eww -t '/usr/bin/'"
     cd "$install_dir"
 
@@ -302,8 +312,12 @@ nitrogen() {
 ##### Tasks
 pre_install() {
     # Create and enters diretory
+    install_dir=$(readlink -f "$install_dir")
     mkdir -p $install_dir
     cd $install_dir
+
+    # Format to full path
+    install_dir=$(pwd)
 
     # Reset logo file
     echo "" > $install_dir/install.log
@@ -348,13 +362,13 @@ pre_install() {
 install() {
     fonts
     user_dirs
-    xinit
     Alacritty
     i3wm
     picom
     eww
     rofi
     nitrogen
+    xinit
 }
 
 post_install() {

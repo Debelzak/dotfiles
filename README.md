@@ -1,5 +1,5 @@
 # dotfiles
-Personal dotfiles.
+Meus dotfiles pessoais
 
 ## Installation
 ```sh
