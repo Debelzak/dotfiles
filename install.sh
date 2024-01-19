@@ -9,6 +9,11 @@ done
 
 # Get sudo
 echo -e 'Acesso root necessário para instalar os pacotes.'
+command -v sudo &> /dev/null
+if [ ! $? -eq 0 ]; then
+    echo -e "\033[0;31mO pacote necessário (sudo) não foi encontrado no sistema.\033[0m"
+    exit 1
+fi
 sudo clear;
 
 echo -e "
@@ -71,7 +76,7 @@ status_message() {
     animation_pid=$!
 
     # Executa o comando
-    eval "$command" >> $script_dir/install.log 2>&1
+    eval "$command" >> $install_dir/install.log 2>&1
     command_status=$?
 
     # Encerra a animação
@@ -85,7 +90,7 @@ status_message() {
         echo -e "\r[  \033[0;32mOK\033[0m  ] $message_text"
     else
         echo -e "\r[\033[0;31mFALHA!\033[0m] $message_text"
-        message "error" "A instalação não pôde ser finalizada. Confira o arquivo [$script_dir/install.log] para mais detalhes."
+        message "error" "A instalação não pôde ser finalizada. Confira o arquivo [$install_dir/install.log] para mais detalhes."
         exit 1
     fi
 }
@@ -98,8 +103,24 @@ prompt() {
 #######################################
 ############ Actual script ############
 #######################################
+# Get install dir
+install_dir="$HOME/dotfiles"
+if [ "${no_prompt}" != 1 ]; then
+    prompt "Diretório de instalação: [$install_dir]: "
+    read directory
+    if [ -n "$directory" ]; then
+        if mkdir -p "$directory" && touch "$directory/foo.test" 2> /dev/null; then
+            rm "$directory/foo.test"
+            install_dir="$directory"
+        else
+            echo "Você não possui permissões para escrever neste caminho."
+            exit 1
+        fi
+    fi
+fi
+
+
 # Diretório atual do script
-script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 distro_id="unknown"
 distro_name="unknown"
 
@@ -128,7 +149,7 @@ check_distro_compatibility() {
         [ "$distro_id" = "$comp_distro" ] && return 0
     done
 
-    echo -e "Você está usando uma distribuição incompatível com esse script: $distro_name" >> $script_dir/install.log
+    echo -e "Você está usando uma distribuição incompatível com esse script: $distro_name" >> $install_dir/install.log
 
     return 1
 }
@@ -208,12 +229,12 @@ fonts() {
     font_dir=$HOME/.local/share/fonts/
 
     mkdir -p "$font_dir"
-    status_message "Instalando fontes..." "cp -r '$script_dir/fonts/' '$font_dir'"
+    status_message "Instalando fontes..." "cp -r '$install_dir/fonts/' '$font_dir'"
 }
 
 ##### ~/
 xinit() {
-    source_file="$script_dir/xinitrc"
+    source_file="$install_dir/xinitrc"
     target_file="$HOME/.xinitrc"
 
     create_links "$source_file" "$target_file"
@@ -221,28 +242,28 @@ xinit() {
 
 ##### ~/.config/
 user_dirs() {
-    source_file="$script_dir/config/user-dirs.dirs"
+    source_file="$install_dir/config/user-dirs.dirs"
     target_file="$HOME/.config/user-dirs.dirs"
 
     create_links "$source_file" "$target_file"
 }
 
 Alacritty() {
-    source_dir="$script_dir/config/alacritty"
+    source_dir="$install_dir/config/alacritty"
     target_dir="$HOME/.config/alacritty"
 
     create_links "$source_dir" "$target_dir"
 }
 
 i3wm() {
-    source_dir="$script_dir/config/i3"
+    source_dir="$install_dir/config/i3"
     target_dir="$HOME/.config/i3"
 
     create_links "$source_dir" "$target_dir"
 }
 
 picom() {
-    source_dir="$script_dir/config/picom"
+    source_dir="$install_dir/config/picom"
     target_dir="$HOME/.config/picom"
 
     create_links "$source_dir" "$target_dir"
@@ -250,20 +271,20 @@ picom() {
 
 eww() {
     # build
-    cd "$script_dir/eww/src"
+    cd "$install_dir/eww/src"
     status_message "Compilando eww... Isso deve levar um tempo." "cargo build --release --no-default-features --features=x11"
     status_message "Instalando eww..." "sudo install -vDm755 target/release/eww -t '/usr/bin/'"
-    cd "$script_dir"
+    cd "$install_dir"
 
     # setup links
-    source_dir="$script_dir/config/eww"
+    source_dir="$install_dir/config/eww"
     target_dir="$HOME/.config/eww"
 
     create_links "$source_dir" "$target_dir"
 }
 
 rofi() {
-    source_dir="$script_dir/config/rofi"
+    source_dir="$install_dir/config/rofi"
     target_dir="$HOME/.config/rofi"
 
     create_links "$source_dir" "$target_dir"
@@ -273,18 +294,22 @@ nitrogen() {
     target_dir="$HOME/.config/nitrogen"
     status_message "Configurando papel de parede..." "mkdir -p '$target_dir'"
     echo "[xin_-1]"                             >  "$target_dir/bg-saved.cfg"
-    echo "file=$script_dir/wallpaper/1.jpeg"    >> "$target_dir/bg-saved.cfg"
+    echo "file=$install_dir/wallpaper/1.jpeg"    >> "$target_dir/bg-saved.cfg"
     echo "mode=4"                               >> "$target_dir/bg-saved.cfg"
     echo "bgcolor=#000000"                      >> "$target_dir/bg-saved.cfg"
 }
 
 ##### Tasks
 pre_install() {
+    # Create and enters diretory
+    mkdir -p $install_dir
+    cd $install_dir
+
     # Reset logo file
-    echo "" > $script_dir/install.log
+    echo "" > $install_dir/install.log
 
     ## Prompt
-    message "warning" "Os arquivos de configurações serão instalados utilizando este diretório: [$script_dir]. Após a conclusão, não será possível mover o diretório para outra localização."
+    message "warning" "Os arquivos de configurações serão instalados utilizando este diretório: [$install_dir]. Após a conclusão, não será possível mover o diretório para outra localização."
     if [ "${no_prompt}" != 1 ]; then
         prompt "Deseja continuar? [Y/n]: "
         read continue
@@ -306,6 +331,14 @@ pre_install() {
             install_packages_arch
         ;;
     esac
+
+    # Verify existing files...
+    if [ ! -d "$install_dir/.git" ]; then
+        status_message "Inicializando repositório..." "git init"
+        status_message "Adicionando repositório remoto..." "git remote add origin https://github.com/debelzak/dotfiles.git"
+        status_message "Baixando arquivos de repositório remoto..." "git fetch"
+        status_message "Fazendo checkout para branch principal..." "git reset origin/main --hard"
+    fi
 
     # Fetch git submodules
     status_message "Inicializando submódulos git..." "git submodule init"
