@@ -3,14 +3,17 @@
 # Setup keyboard
 setxkbmap br
 
-# Set compositor
-picom -b
-
-# Set wallpaper
+# Load wallpaper
 nitrogen --restore
 
-# Set notification manager
+# Deploy compositor
+picom -b
+
+# Deploy notification daemon
 dunst &
+
+# Deploy topbar
+eww open bar
 
 # Finally start WM
 exec i3

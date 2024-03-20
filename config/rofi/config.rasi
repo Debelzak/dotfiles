@@ -1,35 +1,37 @@
-@import                          "colors.rasi"
-@theme 							 "theme.rasi"
+@theme 							 "themes/catpuccin-mocha.rasi"
 
 configuration {
-	modes: "window,drun,run,ssh,combi";
+/*  modi: "run,drun,window"; */
+	modi: "combi,window,drun";
+/*	modes: "window,drun,run,ssh,combi"; */
 	font: "Noto Sans 13";
-/*	location: 0;*/
+	location: 0;
 	yoffset: 0;
 	xoffset: 0;
-/*	fixed-num-lines: true;*/
+	fixed-num-lines: true;
 	show-icons: true;
-/*	terminal: "rofi-sensible-terminal";*/
-/*	ssh-client: "ssh";*/
-/*	ssh-command: "{terminal} -e {ssh-client} {host} [-p {port}]";*/
-/*	run-command: "{cmd}";*/
-/*	run-list-command: "";*/
-/*	run-shell-command: "{terminal} -e {cmd}";*/
+    hide-scrollbar: false;
+	terminal: "alacritty";
+	ssh-client: "ssh";
+	ssh-command: "{terminal} -e {ssh-client} {host} [-p {port}]";
+	run-command: "{cmd}";
+	run-list-command: "";
+	run-shell-command: "{terminal} -e {cmd}";
 /*	window-command: "wmctrl -i -R {window}";*/
 /*	window-match-fields: "all";*/
-/*	icon-theme: ;*/
+	icon-theme: "Oranchelo" ;
 /*	drun-match-fields: "name,generic,exec,categories,keywords";*/
 /*	drun-categories: ;*/
 /*	drun-show-actions: false;*/
-/*	drun-display-format: "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";*/
+	drun-display-format: "{icon} {name}";
 /*	drun-url-launcher: "xdg-open";*/
-/*	disable-history: false;*/
+	disable-history: false;
 /*	ignored-prefixes: "";*/
 /*	sort: false;*/
 /*	sorting-method: "normal";*/
 /*	case-sensitive: false;*/
 /*	cycle: true;*/
-/*	sidebar-mode: false;*/
+	sidebar-mode: true;
 /*	hover-select: false;*/
 /*	eh: 1;*/
 /*	auto-select: false;*/
@@ -43,7 +45,7 @@ configuration {
 /*	dpi: -1;*/
 /*	threads: 0;*/
 /*	scroll-method: 0;*/
-	window-format: "[{w}] {t}";
+	window-format: " [{w}] {t}";
   /*window-format: "[{w}] {t} {c}";*/
 	click-to-exit: true;
 /*	max-history-size: 25;*/
@@ -60,12 +62,13 @@ configuration {
 /*	refilter-timeout-limit: 8192;*/
 /*	xserver-i300-workaround: false;*/
 /*	pid: "/run/user/1000/rofi.pid";*/
-/*	display-window: ;*/
+	display-window: " 﩯  Window";
 /*	display-windowcd: ;*/
-/*	display-run: ;*/
-/*	display-ssh: ;*/
-/*	display-drun: ;*/
-/*	display-combi: ;*/
+	display-run: "   Run ";
+	display-ssh: " SSH ";
+  display-drun: "   Apps ";
+  display-Network: " 󰤨  Network";
+	display-combi: "   Combi " ;
 /*	display-keys: ;*/
 /*	display-filebrowser: ;*/
 /*	kb-primary-paste: "Control+V,Shift+Insert";*/

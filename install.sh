@@ -179,6 +179,7 @@ install_packages_arch() {
         xorg
         xorg-xinit
         xdotool
+        mesa
         i3-wm
         alacritty
         picom

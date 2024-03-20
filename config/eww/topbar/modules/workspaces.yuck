@@ -1,21 +1,26 @@
-(defvar WS_NAMES '[
-    "一",
-    "二",
-    "三",
-    "四",
-    "五",
-    "六",
-    "七",
-    "八",
-    "九",
-    "零"
+(defvar workspaces_entries '[
+    {"index":"1","name":"一"},
+    {"index":"2","name":"二"},
+    {"index":"3","name":"三"},
+    {"index":"4","name":"四"},
+    {"index":"5","name":"五"},
+    {"index":"6","name":"六"},
+    {"index":"7","name":"七"},
+    {"index":"8","name":"八"},
+    {"index":"9","name":"九"}
   ]'
 )
+(defvar current_workspace 1)
 (deflisten workspaces_status :initial '[]' "scripts/wm_getworkspaces")
 (defwidget workspaces []
   (box :class "workspaces" :spacing "3"
-    (for entry in "${workspaces_status}"
-      (button :class {entry.focused ? "button selected" : "button"} :onclick "i3-msg workspace ${entry.num} > /dev/null" "${WS_NAMES[(entry.num - 1)]}")
+    (for entry in "${workspaces_entries}"
+      (button :class {entry.index == current_workspace ? "button selected" : "button"} :onclick "i3 workspace number ${entry.index} > /dev/null; eww update current_workspace=${entry.index}" "${entry.name}")
     )
   )
 )
+
+; Only non-empty workspaces visible
+;(for entry in "${workspaces_status}"
+;(button :class {entry.focused ? "button selected" : "button"} :onclick "i3-msg workspace ${entry.num} > /dev/null" "${WS_NAMES[(entry.num - 1)]}")
+;)

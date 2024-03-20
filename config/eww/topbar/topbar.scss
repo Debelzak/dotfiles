@@ -34,12 +34,12 @@
     all: unset;
     background-color: #4e4e4e;
     border-radius: 50px;
-    min-height: 3px;
+    min-height: 5px;
     min-width: 50px;
     margin-left: 10px;
     margin-right: 20px;
 }
-    .metric scale trough highlight {
+.metric scale trough highlight {
     all: unset;
     background-color: #D35D6E;
     color: #000000;
@@ -49,16 +49,15 @@
     all: unset;
     background-color: #4e4e4e;
     border-radius: 50px;
-    min-height: 3px;
+    min-height: 5px;
     min-width: 50px;
     margin-left: 10px;
     margin-right: 20px;
 }
 
 .button {
-    padding-left: 1rem;
-    padding-right: 1rem;
-    min-height: 2rem;
+    padding-left: .75rem;
+    padding-right: .75rem;
     border-radius: 4px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -98,6 +97,14 @@
     font-weight: bold;
 }
 
+.tray_icon {
+    color: $text_clearest;
+}
+
+.tray_icon_faded {
+    color: rgb(82, 82, 82);
+}
+
 .os_icon {
     font-family: "MesloLGS NF";
     color: $text_clearest;
@@ -105,8 +112,24 @@
     font-weight: bold;
 }
 
-.power_menu {
-    color: $text_clearest;
+.system_resources {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.system_tray_button{
+    border-radius: 4px;
+}
+
+.system_tray {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.system_tray menuitem {
+    margin-top: 1px;
+    border-radius: 7px;
+    padding: 5px;
 }
 
 .power_menu_buttons {

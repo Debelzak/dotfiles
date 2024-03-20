@@ -1,19 +1,19 @@
 (defvar power_menu_expanded false)
 (defwidget power_menu []
   (box :class "power_menu" :space-evenly false
-    (button :class "button" :onclick "eww update power_menu_expanded=${!power_menu_expanded}"
-      (label :class "awesome_icon" :text {(power_menu_expanded) ? "" : ""})
+    (button :class "button tray_icon" :tooltip {(power_menu_expanded) ? "Cancel" : "Power"} :onclick "eww update power_menu_expanded=${!power_menu_expanded}"
+      (label :class "awesome_icon" :text {(power_menu_expanded) ? "" : ""})
     )
     (revealer :transition "slideright" :reveal {power_menu_expanded} :duration "500ms"
       (box :class "power_menu_buttons"
-        (button :class "button suspend" :onclick "systemctl suspend"
-          (label :class "awesome_icon" :text "" :tooltip "Suspend")
+        (button :class "button suspend" :tooltip "Suspend" :onclick "systemctl suspend"
+          (label :class "awesome_icon" :text "")
         )
-        (button :class "button reboot" :onclick "systemctl reboot"
-          (label :class "awesome_icon" :text "" :tooltip "Reboot")
+        (button :class "button reboot" :tooltip "Reboot" :onclick "systemctl reboot"
+          (label :class "awesome_icon" :text "")
         )
-        (button :class "button poweroff" :onclick "systemctl poweroff"
-          (label :class "awesome_icon" :text "" :tooltip "Power off")
+        (button :class "button poweroff" :tooltip "Poweroff" :onclick "systemctl poweroff"
+          (label :class "awesome_icon" :text "")
         )
       )
     )
