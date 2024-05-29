@@ -25,7 +25,7 @@
     )
     (revealer :transition "slideright" :reveal {volume_expanded} :duration "500ms"
       (box :class "volume_container"
-        (metric :label "" :value volume :onchange "pactl -- set-sink-volume 0 {}%; eww update volume={}")
+        (metric :label "" :value volume :onchange "pactl -- set-sink-volume $(pactl get-default-sink) {}%; eww update volume={}")
       )
     )
   )

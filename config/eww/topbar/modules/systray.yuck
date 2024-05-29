@@ -4,7 +4,7 @@
   (box :class "system_tray_button" :space-evenly false :halign "start"
     (revealer :transition "slideleft" :reveal {systray_expanded} :duration "500ms"
       (box :class "system_tray"
-        (systray :pack-direction "left" :icon-size 18)
+        (systray :pack-direction "left" :icon-size 18 :spacing 8)
       )
     )
     (button :class "button tray_icon" :tooltip {(systray_expanded) ? "Hide Tray" : "Show Tray"} :onclick "eww update systray_expanded=${!systray_expanded}"

@@ -1,7 +1,11 @@
 #!/bin/sh
+xrdb ~/.Xresources
 
 # Setup keyboard
 setxkbmap br
+
+# Load polkit
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
 # Load wallpaper
 nitrogen --restore

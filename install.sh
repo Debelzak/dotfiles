@@ -171,6 +171,7 @@ install_packages_arch() {
 
     # Lista de pacotes a serem instalados
     packages=(
+        polkit-gnome
         pkg-config              #eww build
         gcc                     #eww build
         cargo-nightly           #eww build
