@@ -5,6 +5,16 @@
 # this file and re-run i3-config-wizard(1).
 #
 
+workspace 1 output DP-4
+workspace 2 output DP-4
+workspace 3 output DP-4
+workspace 4 output DP-4
+workspace 5 output DP-4
+workspace 6 output DP-4
+workspace 7 output DP-4
+workspace 8 output DP-4
+workspace 9 output DP-4
+
 mouse_warping none
 focus_follows_mouse yes
 
@@ -187,9 +197,9 @@ mode "resize" {
         bindsym semicolon resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
         bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Left resize shrink width 10 px or 10 ppt
         bindsym Right resize grow width 10 px or 10 ppt
 
         # back to normal: Enter or Escape or $mod+r

@@ -2,12 +2,13 @@
 (defwidget internet_tray []
   (box :class {(internet_status.connected) ? "internet_tray tray_icon" : "internet_tray tray_icon_faded"} :space-evenly false
     (button :class "button" :onclick ""
-      (label :class "awesome_icon" :text {(internet_status.connected) ? 
-                                            (internet_status.type == "wired") ? "" :
-                                            (internet_status.type == "wireless") ? "" :
-                                            "Unknown"
-                                          : "" 
-                                         })
+      (label :class "awesome_icon" :text {
+        (internet_status.connected) ? 
+          (internet_status.type == "wired") ? "" :
+          (internet_status.type == "wireless") ? "" :
+          "Unknown"
+        : "" 
+      })
     )
   )
 )
