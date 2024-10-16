@@ -1,6 +1,6 @@
 # dotfiles
 
-Meus dotfiles pessoais
+Arquivos de configuração do meu ambiente linux.
 
 ## Instalação
 
