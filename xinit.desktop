@@ -1,6 +1,0 @@
-[Desktop Entry]
-Name=XInit
-Comment=Start with home .xinitrc file
-Exec=~/.xinitrc
-Type=Application
-DesktopNames=XInit
