@@ -1,5 +1,4 @@
-;; Need to merge pull request #743
-(defvar systray_expanded false)
+(defvar systray_expanded true)
 (defwidget system_tray []
   (box :class "system_tray_button" :space-evenly false :halign "start"
     (revealer :transition "slideleft" :reveal {systray_expanded} :duration "500ms"

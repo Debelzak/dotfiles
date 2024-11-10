@@ -1,9 +1,9 @@
 # dotfiles
 
-Meus dotfiles pessoais
+Configurações e ajustes pessoais do meu ambiente de trabalho.
 
 ## Instalação
 
-```sh
+```bash
 sh <(curl -s https://raw.githubusercontent.com/Debelzak/dotfiles/main/install.sh)
 ```

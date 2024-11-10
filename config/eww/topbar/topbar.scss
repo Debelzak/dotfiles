@@ -1,14 +1,18 @@
 * {
     all: unset; //Unsets everything so you can style everything from scratch
-    font-family: "Noto Sans CJK JP";
+    font-family: "Source Code Pro";
     font-weight: bold;
     font-size: 10pt;
+}
+
+.literal {
+    all: unset;
 }
 
 //Global Styles
 .bar {
     background-color: transparent;
-    margin: 10px 10px 0px 10px;
+    margin: 10px 10px 10px 10px;
 }
 
 .container {
@@ -88,7 +92,7 @@
 }
 
 .focused_window {
-    margin-left: 15px;
+    margin-left: 10px;
 }
 
 .awesome_icon {

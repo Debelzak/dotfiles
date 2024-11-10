@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# Config
+workspace_entries=("1" "2" "3" "4" "5" "6" "7" "8" "9")
+
+# Runtime
+current_workspace=0
+function OnChangedWorkspace  {
+  local return="["
+  local index=0
+  local event="$1"
+  local new_workspace=$(echo "$event" | sed 's/.*>>\([0-9]*\).*/\1/')
+  for workspace in "${workspace_entries[@]}"; do
+    active="false"
+    onclick="hyprctl dispatch workspace $workspace"
+    visible="true"
+
+    if [ "$workspace" == "$new_workspace" ]; then
+      current_workspace=$workspace;
+      active="true"
+    fi
+
+    if [ "$index" == "0" ]; then
+      return="$return"
+    else
+      return="$return,"
+    fi
+
+    return="$return{\"name\":\"$workspace\",\"visible\":\"$visible\",\"active\":\"$active\",\"onclick\":\"$onclick\"}"
+    index=$index+1
+  done
+
+  return=$return]
+  echo $return
+}
+
+function handle {
+  case $1 in
+    workspace\>*) OnChangedWorkspace $1;;
+  esac
+}
+
+OnChangedWorkspace "workspace>>1";
+
+socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do handle "$line"; done

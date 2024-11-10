@@ -15,16 +15,18 @@
 
 ;; Window
 (defwindow bar
-  :monitor 0
-  :windowtype "dock"
+  :monitor "0"
+  :windowtype "dock" ;x11
   :stacking "fg"
   :geometry (geometry :x "0%"
                       :y "0%"
                       :width "100%"
-                      :height "55px"
+                      :height "50px"
                       :anchor "top center")
-  :reserve (struts :side "top" :distance "4%")
-  :wm-ignore false
+  :reserve (struts :side "top" :distance "50px")  ;x11
+  :wm-ignore false  ;x11
+  :exclusive true ;wayland
+  :focusable false ;wayland
   (bar)
 )
 
@@ -41,9 +43,8 @@
 )
 
 ;; Left bar
-(deflisten workspaces :initial '[]' "scripts/workspace_manager")
 (defwidget left []
-  (box :class "left" :orientation "h" :space-evenly false :halign "start" :spacing 3
+  (box :class "left" :orientation "h" :space-evenly false :halign "start" :spacing 5
     (os_button)
     (workspaces)
     (focused_window)

@@ -172,32 +172,30 @@ install_packages_arch() {
     # Lista de pacotes a serem instalados
     packages=(
         polkit-gnome
-        pkg-config              #eww build
-        gcc                     #eww build
-        cargo-nightly           #eww build
-        gtk3                    #eww runtime
-        gtk-layer-shell         #eww runtime (wayland)
-        xorg
-        xorg-xinit
-        xdotool
+        pkg-config              # eww build
+        gcc                     # eww build
+        cargo-nightly           # eww build
+        libdbusmenu-gtk3        # eww build
+        gtk3                    # eww runtime
+        gtk-layer-shell         # eww runtime (wayland)
+        socat                   # hyprland & eww req
+        hyprland                # wayland wm
+        hyprpaper               # wallpaper
+        nwg-look                # wayland (?)
         mesa
-        i3-wm
-        alacritty
-        picom
-        nitrogen
-        git
-        rofi
-        dunst
-        noto-fonts-cjk
-        ttf-font-awesome
-        #ttf-meslo-nerd         # substituido pelas fontes locais
-        nodejs
-        npm
-        pavucontrol
-        flameshot
-        # arc-gtk-theme arc-icon-theme lxappearance
-        # feh
-        # mplayer
+        alacritty               # Terminal Emulator
+        git                     # CORE
+        rofi-wayland            # Launcher
+        dunst                   # Notifications Popup
+        noto-fonts-cjk          # Unicode font / Japanese
+        ttf-vlgothic            # Unicode font / Japanese
+        ttf-font-awesome        # Font Awesome
+        nodejs                  # Eww Weather
+        npm                     # Eww Weather
+        pavucontrol             # Eww Sound
+        alsa-utils              # Eww Sound
+        flameshot               # Print Screen
+        nautilus                # File explorer
     )
 
     # Loop para instalar cada pacote
@@ -242,16 +240,6 @@ fonts() {
     status_message "Instalando fontes..." "cp -r '$install_dir/fonts/' '$font_dir'"
 }
 
-##### ~/
-xinit() {
-    source_file="$install_dir/xinitrc"
-    target_file="$HOME/.xinitrc"
-
-    create_links "$source_file" "$target_file"
-
-    status_message "Criando entrada xdesktop..." "sudo cp -f $install_dir/xinit.desktop /usr/share/xsessions/xinit.desktop"
-}
-
 ##### ~/.config/
 user_dirs() {
     source_file="$install_dir/config/user-dirs.dirs"
@@ -267,24 +255,23 @@ Alacritty() {
     create_links "$source_dir" "$target_dir"
 }
 
-i3wm() {
-    source_dir="$install_dir/config/i3"
-    target_dir="$HOME/.config/i3"
+hyprland() {
+    source_dir="$install_dir/config/hypr"
+    target_dir="$HOME/.config/hypr"
 
     create_links "$source_dir" "$target_dir"
 }
 
-picom() {
-    source_dir="$install_dir/config/picom"
-    target_dir="$HOME/.config/picom"
 
-    create_links "$source_dir" "$target_dir"
+hyprpaper() {
+    target_dir="$HOME/Imagens"
+    status_message "Configurando papel de parede..." "cp -r ./wallpaper '$target_dir'"
 }
 
 eww() {
     # build
     cd "$install_dir/eww/src"
-    status_message "Compilando eww. Isso deve levar um tempo..." "cargo build --release --no-default-features --features=x11"
+    status_message "Compilando eww. Isso deve levar um tempo..." "cargo build --release --no-default-features --features=x11,wayland"
     status_message "Instalando eww..." "sudo install -vDm755 target/release/eww -t '/usr/bin/'"
     cd "$install_dir"
 
@@ -300,15 +287,6 @@ rofi() {
     target_dir="$HOME/.config/rofi"
 
     create_links "$source_dir" "$target_dir"
-}
-
-nitrogen() {
-    target_dir="$HOME/.config/nitrogen"
-    status_message "Configurando papel de parede..." "mkdir -p '$target_dir'"
-    echo "[xin_-1]"                             >  "$target_dir/bg-saved.cfg"
-    echo "file=$install_dir/wallpaper/1.jpeg"    >> "$target_dir/bg-saved.cfg"
-    echo "mode=4"                               >> "$target_dir/bg-saved.cfg"
-    echo "bgcolor=#000000"                      >> "$target_dir/bg-saved.cfg"
 }
 
 ##### Tasks
@@ -365,12 +343,10 @@ install() {
     fonts
     user_dirs
     Alacritty
-    i3wm
-    picom
+    hyprland
+    hyprpaper
     eww
     rofi
-    nitrogen
-    xinit
 }
 
 post_install() {

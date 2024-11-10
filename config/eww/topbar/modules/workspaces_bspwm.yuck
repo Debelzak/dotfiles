@@ -1,0 +1,29 @@
+(defvar workspaces_entries '[
+    {"index":"0","name":"1"},
+    {"index":"1","name":"2"},
+    {"index":"2","name":"3"},
+    {"index":"3","name":"4"},
+    {"index":"4","name":"5"},
+    {"index":"5","name":"6"},
+    {"index":"6","name":"7"}, 
+    {"index":"7","name":"8"},
+    {"index":"8","name":"9"}
+  ]'
+)
+(deflisten workspaces :initial '{}' "scripts/wm/bspwm/getworkspaces")
+(defvar workspace_hide_unused true)
+(defwidget workspaces []
+  (box :class "workspaces" :spacing "3"
+    (for entry in "${workspaces_entries}"
+      ;bspwm
+        (button 
+          :class { workspaces.monitors[0].focusedDesktopId == workspaces.monitors[0].desktops[entry.index].id ? "button selected" : "button"} 
+          :onclick "bspc desktop -f ^${entry.index+1} > /dev/null" 
+          :visible { workspace_hide_unused && workspaces.monitors[0].desktops[entry.index].root == "null" && workspaces.monitors[0].focusedDesktopId != workspaces.monitors[0].desktops[entry.index].id ? false : true } 
+          { workspaces.monitors[0].desktops[entry.index].root != "null" && workspaces.monitors[0].desktops[entry.index].root.client?.urgent == "true" ? "!!!!!!!!" : "${entry.name}" }
+        )
+      ;i3wm
+      ; (button :class {entry.index == current_workspace ? "button selected" : "button"} :onclick "i3 workspace number ${entry.index} > /dev/null; eww update current_workspace=${entry.index}" "${entry.name}")
+    )
+  )
+)

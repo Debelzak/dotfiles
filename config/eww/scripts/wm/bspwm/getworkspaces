@@ -1,0 +1,4 @@
+#!/bin/bash
+bspc subscribe | while read -r _ _ desktop_id; do
+    bspc wm --dump-state
+done
