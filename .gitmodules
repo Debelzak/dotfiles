@@ -1,3 +1,15 @@
 [submodule "eww/src"]
 	path = eww/src
 	url = https://github.com/elkowar/eww.git
+
+[submodule "config/zsh/plugins/zsh-autosuggestions"]
+	path = config/zsh/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions.git
+
+[submodule "config/zsh/plugins/zsh-syntax-highlighting"]
+	path = config/zsh/plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+
+[submodule "config/zsh/themes/zsh-theme-powerlevel10k"]
+	path = config/zsh/themes/zsh-theme-powerlevel10k
+	url = https://github.com/romkatv/powerlevel10k.git
