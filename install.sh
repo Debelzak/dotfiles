@@ -196,6 +196,7 @@ install_packages_arch() {
         alsa-utils              # Eww Sound
         flameshot               # Print Screen
         nautilus                # File explorer
+        zsh                     # Shell
     )
 
     # Loop para instalar cada pacote
@@ -238,6 +239,19 @@ fonts() {
 
     mkdir -p "$font_dir"
     status_message "Instalando fontes..." "cp -r '$install_dir/fonts/' '$font_dir'"
+}
+
+##### Zsh
+zsh() {
+    source_file="$install_dir/config/.zshrc"
+    target_file="$HOME/.zshrc"
+    create_links "$source_file" "$target_file"
+
+    source_dir="$install_dir/config/zsh"
+    target_dir="$HOME/.local/share/zsh"
+    create_links "$source_dir" "$target_dir"
+
+    status_message "Definindo zsh como shell padrão..." "sudo usermod -s /bin/zsh $USER"
 }
 
 ##### ~/.config/
@@ -347,6 +361,7 @@ install() {
     hyprpaper
     eww
     rofi
+    zsh
 }
 
 post_install() {
