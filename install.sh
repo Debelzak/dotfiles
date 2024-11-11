@@ -243,15 +243,19 @@ fonts() {
 
 ##### Zsh
 zsh() {
-    source_file="$install_dir/config/.zshrc"
-    target_file="$HOME/.zshrc"
-    create_links "$source_file" "$target_file"
-
     source_dir="$install_dir/config/zsh"
     target_dir="$HOME/.local/share/zsh"
+
     create_links "$source_dir" "$target_dir"
 
-    status_message "Definindo zsh como shell padrão..." "sudo usermod -s /bin/zsh $USER"
+    status_message "Configurando zsh como shell padrão..." "sudo usermod -s /bin/zsh $USER"
+}
+
+zshrc() {
+    source_file="$install_dir/config/.zshrc"
+    target_file="$HOME/.zshrc"
+    
+    create_links "$source_file" "$target_file"
 }
 
 ##### ~/.config/
@@ -262,7 +266,7 @@ user_dirs() {
     create_links "$source_file" "$target_file"
 }
 
-Alacritty() {
+alacritty() {
     source_dir="$install_dir/config/alacritty"
     target_dir="$HOME/.config/alacritty"
 
@@ -276,10 +280,11 @@ hyprland() {
     create_links "$source_dir" "$target_dir"
 }
 
-
-hyprpaper() {
-    target_dir="$HOME/Imagens"
-    status_message "Configurando papel de parede..." "cp -r ./wallpaper '$target_dir'"
+wallpaper() {
+    source_dir="$install_dir/wallpaper"
+    target_dir="$HOME/Imagens/wallpaper"
+    
+    create_links "$source_dir" "$target_dir"
 }
 
 eww() {
@@ -356,16 +361,18 @@ pre_install() {
 install() {
     fonts
     user_dirs
-    Alacritty
+    alacritty
     hyprland
-    hyprpaper
+    wallpaper
     eww
     rofi
     zsh
+    zshrc
 }
 
 post_install() {
     message "success" "Instalação finalizada com sucesso!"
+    message "success" "Inicialize a sessão com o comando: Hyprland"
 }
 
 pre_install
