@@ -41,7 +41,7 @@ alias ll="ls --color -lh"
 alias spm="sudo pacman"
 alias gr="gvim --remote-silent"
 alias vr="vim --remote-silent"
-alias vps="ssh maru@152.67.34.163"
+alias vps="ssh maru@152.67.34.163 -p 50000"
 #------------------------------
 # ShellFuncs
 #------------------------------
