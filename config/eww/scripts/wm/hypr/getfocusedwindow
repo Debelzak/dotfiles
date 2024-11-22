@@ -1,0 +1,19 @@
+#!/bin/sh
+
+function OnChangedFocus {
+  window_title=$(hyprctl activewindow -j | jq -r '.title')
+  window_class=$(hyprctl activewindow -j | jq -r '.class')
+  window_icon=$(find /usr/share/icons/hicolor /usr/share/pixmaps /usr/share/icons/Adwaita -type f -name "$window_class*" -o -name "$window_class*" 2>/dev/null | head -n 1)
+  if [ $window_icon == ""]; then
+    window_icon=$(find /usr/share/icons/hicolor /usr/share/pixmaps /usr/share/icons/Adwaita -type f -name "application-x-executable*" -o -name "application-x-executable*" 2>/dev/null | head -n 1)
+  fi
+  echo '{"window_title":"'$window_title'","window_class":"'$window_class'","window_icon":"'$window_icon'"}'
+}
+
+function handle {
+  case $1 in
+    activewindow\>*) OnChangedFocus $1;;
+  esac
+}
+
+socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do handle "$line"; done

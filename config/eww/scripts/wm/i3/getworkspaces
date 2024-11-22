@@ -1,6 +1,0 @@
-#!/bin/bash
-i3-msg -t get_workspaces
-i3-msg -t subscribe -m '["workspace"]' | while read -r line; do
-    #echo "Evento de workspace: $line"
-    i3-msg -t get_workspaces
-done

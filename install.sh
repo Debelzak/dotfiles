@@ -1,9 +1,9 @@
 #!/bin/sh
 # Get params
-no_prompt=0
+yes_to_all=0
 for param in "$@"; do
-    if [ "${param}" == "--no-prompt" ]; then
-        no_prompt=1
+    if [ "${param}" == "-y" ]; then
+        yes_to_all=1
     fi
 done
 
@@ -11,12 +11,13 @@ done
 printf 'Acesso root necessário para instalar os pacotes.\n'
 command -v sudo &> /dev/null
 if [ ! $? -eq 0 ]; then
-    printf "${RED}O pacote necessário (sudo) não foi encontrado no sistema.${NC}\n"
+    printf "${RED}Um pacote necessário (sudo) não foi encontrado no sistema. Tente novamente após instalar o pacote.${NC}\n"
     exit 1
 fi
 sudo clear;
 
 printf "
+             Debelzak's
   _____        _    __ _ _           
  |  __ \      | |  / _(_) |          
  | |  | | ___ | |_| |_ _| | ___  ___ 
@@ -24,7 +25,6 @@ printf "
  | |__| | (_) | |_| | | | |  __/\__ \\
  |_____/ \___/ \__|_| |_|_|\___||___/
                                      
-            By Debelzak
 \n"
 #######################################
 ############ Helper functions #########
@@ -109,7 +109,7 @@ prompt() {
 #######################################
 # Get install dir
 install_dir="$HOME/dotfiles"
-if [ "${no_prompt}" != 1 ]; then
+if [ "${yes_to_all}" != 1 ]; then
     prompt "Diretório de instalação: [$install_dir]: "
 
     read directory
@@ -197,6 +197,8 @@ install_packages_arch() {
         flameshot               # Print Screen
         nautilus                # File explorer
         zsh                     # Shell
+        jq                      # Json management
+        gdm                     # Login screen
     )
 
     # Loop para instalar cada pacote
@@ -215,7 +217,7 @@ create_links() {
     if [ -e "$source" ]; then
         if [ -e "$target" ]; then
             ## Prompt
-            if [ "${no_prompt}" != 1 ]; then
+            if [ "${yes_to_all}" != 1 ]; then
                 prompt "Já existe uma configuração de ${FUNCNAME[1]} presente. Deseja substituir? [y/N]: "
                 read replace
                 if [ "${replace}" != "y" ]; then
@@ -239,6 +241,14 @@ fonts() {
 
     mkdir -p "$font_dir"
     status_message "Instalando fontes..." "cp -r '$install_dir/fonts/' '$font_dir'"
+}
+
+##### GTK3
+gtk3() {
+    source_dir="$install_dir/config/gtk-3.0"
+    target_dir="$HOME/.config/gtk-3.0"
+
+    create_links "$source_dir" "$target_dir"
 }
 
 ##### Zsh
@@ -323,7 +333,7 @@ pre_install() {
 
     ## Prompt
     message "warning" "Os arquivos de configurações serão instalados utilizando este diretório: [$install_dir]. Após a conclusão, não será possível mover o diretório para outra localização."
-    if [ "${no_prompt}" != 1 ]; then
+    if [ "${yes_to_all}" != 1 ]; then
         prompt "Deseja continuar? [Y/n]: "
         read continue
         if [ "$continue" == "n" ]; then
@@ -360,6 +370,7 @@ pre_install() {
 
 install() {
     fonts
+    gtk3
     user_dirs
     alacritty
     hyprland
@@ -371,8 +382,20 @@ install() {
 }
 
 post_install() {
-    message "success" "Instalação finalizada com sucesso!"
-    message "success" "Inicialize a sessão com o comando: Hyprland"
+    echo -e "${GREEN}Instalação realizada com sucesso!${NC}";
+    echo -e "${GREEN}Inicialize a sessão com o comando: Hyprland${NC}";
+
+    prompt "Iniciar interface gráfica automaticamente ao ligar o computador? [Y/n]: "
+    read continue
+    if [ "$continue" != "n" ]; then
+        status_message "Habilitando serviço GDM..." "sudo systemctl enable gdm"
+    fi
+    
+    prompt "Iniciar interface gráfica agora? [Y/n]: "
+    read continue
+    if [ "$continue" != "n" ]; then
+        status_message "Inicializando serviço GDM..." "sudo systemctl restart gdm"
+    fi
 }
 
 pre_install

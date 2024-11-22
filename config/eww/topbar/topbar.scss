@@ -1,8 +1,12 @@
 * {
-    all: unset; //Unsets everything so you can style everything from scratch
-    font-family: "Source Code Pro";
+    //all: unset; //Unsets everything so you can style everything from scratch
+    font-family: "Cantarell Extra Bold", sans-serif;
     font-weight: bold;
-    font-size: 10pt;
+    font-size: 14px;
+}
+
+.button {
+    all: unset;
 }
 
 .literal {
@@ -91,9 +95,9 @@
     background-color: $button_active;
 }
 
-.focused_window {
-    margin-left: 10px;
-}
+//.focused_window {
+    //margin-left: 5px;
+//}
 
 .awesome_icon {
     font-family: "Font Awesome 6 Free";

@@ -2,12 +2,12 @@
 (defwidget workspaces []
   (box :class "workspaces" :spacing "3"
     (for workspace in "${workspaces_entries}"
-        (button 
-          :class { (workspace.active) ? "button selected" : "button" } 
-          :onclick {workspace.onclick}
-          :visible {workspace.visible} 
-          {workspace.name}
-        )
+      (button 
+        :class { (workspace.active) ? "button selected" : "button" } 
+        :onclick {workspace.onclick}
+        :visible {workspace.visible} 
+        {workspace.name}
+      )
     )
   )
 )

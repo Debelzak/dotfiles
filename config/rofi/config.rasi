@@ -66,8 +66,8 @@ configuration {
 /*	display-windowcd: ;*/
 	display-run: "   Run ";
 	display-ssh: " SSH ";
-  display-drun: "   Apps ";
-  display-Network: " 󰤨  Network";
+	display-drun: "   Apps ";
+	display-Network: " 󰤨  Network";
 	display-combi: "   Combi " ;
 /*	display-keys: ;*/
 /*	display-filebrowser: ;*/
@@ -156,6 +156,6 @@ configuration {
       sorting-method:    "name";
   }
   run,drun,window {
-  	fallback-icon: "application-x-addon";
+  	fallback-icon: "application-x-executable";
   }
 }
