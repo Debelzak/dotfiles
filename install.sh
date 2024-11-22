@@ -187,6 +187,7 @@ install_packages_arch() {
         git                     # CORE
         rofi-wayland            # Launcher
         dunst                   # Notifications Popup
+        noto-fonts              # Fonts
         noto-fonts-cjk          # Unicode font / Japanese
         ttf-vlgothic            # Unicode font / Japanese
         ttf-font-awesome        # Font Awesome
