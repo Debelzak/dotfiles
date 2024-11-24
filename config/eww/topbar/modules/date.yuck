@@ -4,6 +4,8 @@
 )
 (defwidget date []
   (box :class "date"
-    (label :text "${date.day_number} de ${date.month_name} ${date.hour}:${date.minute}")
+    (button :class "button" :onclick "eww open notifications-tray && eww open notifications-tray-closer"
+      "${date.day_number} de ${date.month_name} ${date.hour}:${date.minute}"
+    )
   )
 )

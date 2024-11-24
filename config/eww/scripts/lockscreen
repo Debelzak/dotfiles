@@ -1,0 +1,4 @@
+#!/bin/sh
+grim /tmp/lockscreen.png
+magick /tmp/lockscreen.png -blur 0x8 /tmp/lockscreen.png
+swaylock --indicator-idle-visible -i /tmp/lockscreen.png

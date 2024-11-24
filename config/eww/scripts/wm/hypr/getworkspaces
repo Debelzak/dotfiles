@@ -102,10 +102,18 @@ function OnChangedFocus {
   fi
 }
 
+function OnUrgent {
+  event=$1
+  window_address=$(echo "$event" | sed 's/.*>>\([a-zA-Z0-9]*\).*/\1/')
+  
+  hyprctl dispatch focuswindow address:0x$window_address
+}
+
 function handle {
   case $1 in
     workspace\>*) OnChangedWorkspace $1;;
     activewindow\>*) OnChangedFocus $1;;
+    urgent\>*) OnUrgent $1;;
   esac
 }
 

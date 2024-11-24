@@ -2,7 +2,7 @@
 
 configuration {
 /*  modi: "run,drun,window"; */
-	modi: "combi,window,drun";
+	modi: "drun,run";
 /*	modes: "window,drun,run,ssh,combi"; */
 	font: "Noto Sans 13";
 	location: 0;
@@ -19,13 +19,13 @@ configuration {
 	run-shell-command: "{terminal} -e {cmd}";
 /*	window-command: "wmctrl -i -R {window}";*/
 /*	window-match-fields: "all";*/
-	icon-theme: "Oranchelo" ;
+	icon-theme: "Adwaita" ;
 /*	drun-match-fields: "name,generic,exec,categories,keywords";*/
 /*	drun-categories: ;*/
 /*	drun-show-actions: false;*/
 	drun-display-format: "{icon} {name}";
 /*	drun-url-launcher: "xdg-open";*/
-	disable-history: false;
+	disable-history: true;
 /*	ignored-prefixes: "";*/
 /*	sort: false;*/
 /*	sorting-method: "normal";*/
@@ -45,7 +45,7 @@ configuration {
 /*	dpi: -1;*/
 /*	threads: 0;*/
 /*	scroll-method: 0;*/
-	window-format: " • {t}";
+	window-format: "  [{w}] {t}";
   /*window-format: "[{w}] {t} {c}";*/
 	click-to-exit: true;
 /*	max-history-size: 25;*/
@@ -62,13 +62,13 @@ configuration {
 /*	refilter-timeout-limit: 8192;*/
 /*	xserver-i300-workaround: false;*/
 /*	pid: "/run/user/1000/rofi.pid";*/
-	display-window: " 﩯  Window";
+	display-window: " 﩯  Janelas";
 /*	display-windowcd: ;*/
-	display-run: "   Run ";
+	display-run: "   Comando ";
 	display-ssh: " SSH ";
 	display-drun: "   Apps ";
 	display-Network: " 󰤨  Network";
-	display-combi: "   Combi " ;
+	display-combi: "   Todos " ;
 /*	display-keys: ;*/
 /*	display-filebrowser: ;*/
 /*	kb-primary-paste: "Control+V,Shift+Insert";*/

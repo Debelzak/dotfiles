@@ -181,7 +181,8 @@ install_packages_arch() {
         socat                   # hyprland & eww req
         hyprland                # wayland wm
         hyprpaper               # wallpaper
-        nwg-look                # wayland (?)
+        nwg-look                # theme selector
+        gnome-themes-extra      # Adwaita themes
         mesa
         alacritty               # Terminal Emulator
         git                     # CORE
@@ -200,6 +201,10 @@ install_packages_arch() {
         zsh                     # Shell
         jq                      # Json management
         gdm                     # Login screen
+        grim                    # Lock Screen
+        imagemagick             # Lock Screen
+        swaylock                # Lock Screen
+        playerctl               # Follow media playing
     )
 
     # Loop para instalar cada pacote
@@ -319,6 +324,13 @@ rofi() {
     create_links "$source_dir" "$target_dir"
 }
 
+dunst() {
+    source_dir="$install_dir/config/dunst"
+    target_dir="$HOME/.config/dunst"
+
+    create_links "$source_dir" "$target_dir"
+}
+
 ##### Tasks
 pre_install() {
     # Create and enters diretory
@@ -378,6 +390,7 @@ install() {
     wallpaper
     eww
     rofi
+    dunst
     zsh
     zshrc
 }

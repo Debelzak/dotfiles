@@ -1,19 +1,119 @@
 #!/bin/sh
+#########################################################
+###################### CONFIG ###########################
+#########################################################
+# Diretórios de ícones
+icon_dirs="
+  /usr/share/icons/hicolor
+  /usr/share/icons/Adwaita
+  /usr/share/pixmaps
+  $HOME/.local/share/icons
+  $HOME/.icons
+  /var/lib/flatpak/exports/share/icons
+  $HOME/.local/share/flatpak/exports/share/icons
+"
 
-function OnChangedFocus {
-  window_title=$(hyprctl activewindow -j | jq -r '.title')
-  window_class=$(hyprctl activewindow -j | jq -r '.class')
-  window_icon=$(find /usr/share/icons/hicolor /usr/share/pixmaps /usr/share/icons/Adwaita -type f -name "$window_class*" -o -name "$window_class*" 2>/dev/null | head -n 1)
-  if [ $window_icon == ""]; then
-    window_icon=$(find /usr/share/icons/hicolor /usr/share/pixmaps /usr/share/icons/Adwaita -type f -name "application-x-executable*" -o -name "application-x-executable*" 2>/dev/null | head -n 1)
+# Nome do ícone de fallback
+fallback_icon_name="application-x-executable"
+
+# Arquivo temporário para cache
+cache_file="/tmp/icon_cache.txt"
+
+#########################################################
+###################### RUNTIME ##########################
+#########################################################
+# Define o ícone padrão para fallback
+fallback_icon=""
+for dir in $icon_dirs; do
+  fallback_icon=$(find "$dir" -type f -name "${fallback_icon_name}*" 2>/dev/null | head -n 1)
+  [ -n "$fallback_icon" ] && break
+done
+
+# Limpa o cache ao iniciar (opcional)
+: > "$cache_file"
+
+# Função para buscar ícones
+find_icon() {
+  local icon=""
+  local class=$1
+
+  # Verifica se o ícone já está no cache e se o arquivo existe. Caso o ícone esteja no cache mas o arquivo não existe mais, remove a entrada inválida e continua o script.
+  if grep -q "^$class|" "$cache_file"; then
+    icon=$(grep "^$class|" "$cache_file" | cut -d'|' -f2)
+    if [[ -f "$icon" ]]; then
+      echo "$icon"
+      return
+    else
+      sed -i "/^$class|/d" "$cache_file"
+    fi
   fi
-  echo '{"window_title":"'$window_title'","window_class":"'$window_class'","window_icon":"'$window_icon'"}'
+  
+  icon=""
+
+  # Gerar os diretórios montados dinamicamente
+  mount_dirs=$(echo /tmp/.mount_*/usr/share/icons)
+
+  # Atualizar a variável icon_dirs
+  icon_dirs="$icon_dirs
+  $mount_dirs"
+
+  # Tentar encontrar ícone nos diretórios especificados
+  for dir in $icon_dirs; do
+    icon=$(find "$dir" -iname "*${class,,}*" 2>/dev/null | head -n 1)
+    [ -n "$icon" ] && break
+  done
+
+  # Se nenhum ícone for encontrado, tentar buscar em arquivos .desktop
+  if [ -z "$icon" ]; then
+    desktop_file=$(find /usr/share/applications $HOME/.local/share/applications \
+      /var/lib/flatpak/exports/share/applications $HOME/.local/share/flatpak/exports/share/applications \
+      -type f -name "${class,,}*.desktop" 2>/dev/null | head -n 1)
+
+    if [ -n "$desktop_file" ]; then
+      icon=$(grep -E '^Icon=' "$desktop_file" | head -n 1 | cut -d'=' -f2)
+      # Tentar localizar o arquivo real do ícone, caso seja referenciado apenas pelo nome
+      if [ -n "$icon" ] && [ ! -f "$icon" ]; then
+        for dir in $icon_dirs; do
+          found_icon=$(find "$dir" -type f -iname "${icon,,}*" 2>/dev/null | head -n 1)
+          if [[ -n "$found_icon" ]]; then
+            icon=$found_icon
+            break
+          fi
+        done
+      fi
+    fi
+  fi
+
+  # Salva no cache
+  echo "$class|$icon" >> "$cache_file"
+
+  echo "$icon"
 }
 
-function handle {
+# Função para tratar mudanças de foco
+OnChangedFocus() {
+  # Obtem informações da janela ativa em uma única chamada
+  window_data=$(hyprctl activewindow -j)
+  window_title=$(echo "$window_data" | jq -r '.title')
+  window_class=$(echo "$window_data" | jq -r '.class')
+  window_icon=$(find_icon "$window_class")
+
+  # Usa o ícone fallback se nenhum foi encontrado
+  [ -z "$window_icon" ] && window_icon="$fallback_icon"
+
+  # Exibe os dados no formato JSON
+  echo "{\"window_title\":\"$window_title\",\"window_class\":\"$window_class\",\"window_icon\":\"$window_icon\"}"
+}
+
+# Função para tratar eventos
+handle() {
   case $1 in
-    activewindow\>*) OnChangedFocus $1;;
+    activewindow\>*) OnChangedFocus;;
   esac
 }
 
-socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do handle "$line"; done
+# Ouve o socket e processa os eventos
+socat -U - UNIX-CONNECT:"$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" | \
+while read -r line; do
+  handle "$line"
+done

@@ -1,3 +1,73 @@
 @import "colors.scss";  // Theme color scheme
 
 @import "topbar/topbar.scss";
+@import "dialog/loading.scss";
+@import "notifications/notifications-tray.scss";
+
+* {
+    //all: unset; //Unsets everything so you can style everything from scratch
+    font-family: "Cantarell Extra Bold", sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.awesome_icon {
+    font-family: "Font Awesome 6 Free";
+    font-size: 13pt;
+    font-weight: bold;
+}
+
+
+.literal {
+    all: unset;
+}
+
+.metric scale trough highlight {
+    all: unset;
+    background-color: #D35D6E;
+    color: #000000;
+    border-radius: 10px;
+}
+.metric scale trough {
+    all: unset;
+    background-color: #4e4e4e;
+    border-radius: 50px;
+    min-height: 5px;
+    min-width: 50px;
+    margin-left: 10px;
+    margin-right: 20px;
+}
+.metric scale trough highlight {
+    all: unset;
+    background-color: #D35D6E;
+    color: #000000;
+    border-radius: 10px;
+}
+.metric scale trough {
+    all: unset;
+    background-color: #4e4e4e;
+    border-radius: 50px;
+    min-height: 5px;
+    min-width: 50px;
+    margin-left: 10px;
+    margin-right: 20px;
+}
+
+.button {
+    all: unset;
+}
+
+.button {
+    padding-left: .75rem;
+    padding-right: .75rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.button:hover{
+    background-color: $button_hover;
+}
+
+.button:active {
+    background-color: $button_active;
+}

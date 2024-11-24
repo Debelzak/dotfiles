@@ -1,23 +1,8 @@
-;; Components
-(include "components/metric.yuck")
-
-;; Modules
-(include "topbar/modules/workspaces.yuck")
-(include "topbar/modules/system_resources.yuck")
-(include "topbar/modules/weather.yuck")
-(include "topbar/modules/date.yuck")
-(include "topbar/modules/os_button.yuck")
-(include "topbar/modules/power_menu.yuck")
-(include "topbar/modules/focused_window.yuck")
-(include "topbar/modules/sound_tray.yuck")
-(include "topbar/modules/systray.yuck")
-(include "topbar/modules/internet_tray.yuck")
-
 ;; Window
-(defwindow bar
+(defwindow topbar
   :monitor "0"
   :windowtype "dock" ;x11
-  :stacking "fg"
+  :stacking "bg"
   :geometry (geometry :x "0%"
                       :y "0%"
                       :width "100%"
@@ -30,6 +15,17 @@
   (bar)
 )
 
+;; Modules
+(include "topbar/modules/workspaces.yuck")
+(include "topbar/modules/system_resources.yuck")
+(include "topbar/modules/weather.yuck")
+(include "topbar/modules/date.yuck")
+(include "topbar/modules/os_button.yuck")
+(include "topbar/modules/power_menu.yuck")
+(include "topbar/modules/focused_window.yuck")
+(include "topbar/modules/sound_tray.yuck")
+(include "topbar/modules/systray.yuck")
+(include "topbar/modules/internet_tray.yuck")
 
 ;; Bars
 (defwidget bar []
@@ -44,7 +40,7 @@
 
 ;; Left bar
 (defwidget left []
-  (box :class "left" :orientation "h" :space-evenly false :halign "start" :spacing 5
+  (box :class "left" :orientation "h" :space-evenly false :halign "start" :spacing 3
     (os_button)
     (workspaces)
     (focused_window)
@@ -53,7 +49,7 @@
 
 ;; Center bar
 (defwidget center []
-  (box :class "center" :orientation "h" :space-evenly false :halign "center" :spacing 10
+  (box :class "center" :orientation "h" :space-evenly false :halign "center" :spacing 3
     (weather)
     (date)
   )

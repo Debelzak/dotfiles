@@ -1,13 +1,15 @@
 (defpoll weather_status :initial '{"glyph":"","main":{"temp":"..."}}' :interval "600s" "scripts/getweather")
 (defwidget weather []
-  (box :class "weather"
-    (label :class "awesome_icon"
-      :tooltip {weather_status.weather[0].main}
-      :text {weather_status.glyph})
-    (label
-      :tooltip 
-"Real Feel: ${round(weather_status.main.feels_like, 0)}°C
-↑${round(weather_status.main.temp_max, 0)}°C ↓${round(weather_status.main.temp_min, 0)}°C"
-      :text {(weather_status.main.temp != "...") ? "${round(weather_status.main.temp, 0)}°C" : ""})
+  (button :class "button" :onclick "xdg-open https://www.google.com/search?q=clima"
+    (box :class "weather"
+      (label :class "awesome_icon"
+        :tooltip {weather_status.weather[0].main}
+        :text {weather_status.glyph})
+      (label
+        :tooltip 
+  "Real Feel: ${round(weather_status.main.feels_like, 0)}°C
+  ▲${round(weather_status.main.temp_max, 0)}°C ▼${round(weather_status.main.temp_min, 0)}°C"
+        :text {(weather_status.main.temp != "...") ? "${round(weather_status.main.temp, 0)}°C" : ""})
+    )
   )
 )

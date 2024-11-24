@@ -1,25 +1,10 @@
-* {
-    //all: unset; //Unsets everything so you can style everything from scratch
-    font-family: "Cantarell Extra Bold", sans-serif;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.button {
-    all: unset;
-}
-
-.literal {
-    all: unset;
-}
-
 //Global Styles
-.bar {
+.topbar {
     background-color: transparent;
     margin: 10px 10px 10px 10px;
 }
 
-.container {
+.topbar.container {
     background-color: $background;
     color: $text;
     padding: 3px;
@@ -27,132 +12,80 @@
 }
 
 // Styles on classes (see eww.yuck for more information)
-.right slider {
+.topbar .right slider {
     all: unset;
     color: #ffd5cd;
 }
 
-.metric scale trough highlight {
-    all: unset;
-    background-color: #D35D6E;
-    color: #000000;
-    border-radius: 10px;
-}
-.metric scale trough {
-    all: unset;
-    background-color: #4e4e4e;
-    border-radius: 50px;
-    min-height: 5px;
-    min-width: 50px;
-    margin-left: 10px;
-    margin-right: 20px;
-}
-.metric scale trough highlight {
-    all: unset;
-    background-color: #D35D6E;
-    color: #000000;
-    border-radius: 10px;
-}
-.metric scale trough {
-    all: unset;
-    background-color: #4e4e4e;
-    border-radius: 50px;
-    min-height: 5px;
-    min-width: 50px;
-    margin-left: 10px;
-    margin-right: 20px;
-}
-
-.button {
-    padding-left: .75rem;
-    padding-right: .75rem;
-    border-radius: 4px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.button:hover{
-    background-color: $button_hover;
-}
-
-.button:active {
-    background-color: $button_active;
-}
-
-.workspaces .button {
+.topbar .workspaces .button {
     padding-left: .65rem;
     padding-right: .65rem;
     margin-top: .5rem;
     margin-bottom: .5rem;
 }
 
-.workspaces .button.selected {
+.topbar .workspaces .button.selected {
     color: $text_clearest;
     background-color: $button_active;
 }
 
-.workspaces .selected:hover {
+.topbar .workspaces .selected:hover {
     color: $text_clearest;
     background-color: $button_active;
 }
 
-//.focused_window {
+//.topbar .focused_window {
     //margin-left: 5px;
 //}
 
-.awesome_icon {
-    font-family: "Font Awesome 6 Free";
-    font-size: 13pt;
-    font-weight: bold;
-}
-
-.tray_icon {
+.topbar .tray_icon {
     color: $text_clearest;
 }
 
-.tray_icon_faded {
+.topbar .tray_icon_faded {
     color: rgb(82, 82, 82);
 }
 
-.os_icon {
+.topbar .os_icon {
     font-family: "MesloLGS NF";
     color: $text_clearest;
     font-size: 20pt;
     font-weight: bold;
 }
 
-.system_resources {
+.topbar .system_resources {
     padding-right: 10px;
     padding-left: 10px;
 }
 
-.system_tray_button{
+.topbar .system_tray_button{
     border-radius: 4px;
 }
 
-.system_tray {
+.topbar .system_tray {
     padding-right: 5px;
     padding-left: 5px;
 }
 
-.system_tray menuitem {
+.topbar .system_tray menuitem {
     margin-top: 1px;
     border-radius: 7px;
     padding: 5px;
 }
 
-.power_menu_buttons {
+.topbar .power_menu_buttons {
     background-color: $foreground;
     border-radius: 4px;
 }
 
-.power_menu_buttons .poweroff {
+.topbar .power_menu_buttons .poweroff {
     color: $error
 }
 
-.power_menu_buttons .reboot {
+.topbar .power_menu_buttons .reboot {
     color: $success
 }
 
-.power_menu_buttons .suspend {
+.topbar .power_menu_buttons .suspend {
     color: $warning
 }

@@ -7,7 +7,7 @@
       )
     )
     (button :class "button tray_icon" :tooltip {(systray_expanded) ? "Hide Tray" : "Show Tray"} :onclick "eww update systray_expanded=${!systray_expanded}"
-      (label :class "awesome_icon" :text {(systray_expanded) ? "" : ""})
+      (label :class "awesome_icon" :text {(systray_expanded) ? "" : ""})
     )
   )
 )

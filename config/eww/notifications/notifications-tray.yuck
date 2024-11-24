@@ -1,0 +1,37 @@
+(defwindow notifications-tray-closer
+  :monitor 0
+  :geometry (geometry :x "-100%" :y "-100%" :width "200%" :height "200%")
+  :stacking "fg"
+  :focusable false
+  (closer :window "notifications-tray"))
+
+;; Window
+(defwindow notifications-tray
+  :monitor "0"
+  :stacking "overlay"
+  :geometry (geometry :x "0"
+                      :y "0"
+                      :width "700px"
+                      :height "700px"
+                      :anchor "top center")
+  :exclusive false
+  :focusable false
+  (notifications-container)
+)
+
+(defwidget notifications-container []
+  (centerbox :orientation "horizontal"
+    (box :orientation "vertical"
+      (label :yalign 1 :text "" :style "font-size: 38pt;")
+      (label :yalign 0 :height 50 :text "Sem notificações")
+    )
+    (box)
+    (box :orientation "vertical" :space-evenly false
+      (box :orientation "vertical"
+        (label :xalign 0 :text "Sábado")
+        (label :xalign 0 :text "novembro 32 2024")
+      )
+      (calendar :halign "center" :valign "start")
+    )
+  )
+)

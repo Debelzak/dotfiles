@@ -1,1 +1,8 @@
+;; Components
+(include "components/metric.yuck")
+(include "components/closer.yuck")
+
+;; Widgets
 (include "topbar/topbar.yuck")
+(include "notifications/notifications-tray.yuck")
+(include "dialog/loading.yuck")
