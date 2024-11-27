@@ -2,7 +2,7 @@
 (defvar volume_expanded false)
 (defwidget sound_tray []
   (box :class "sound tray_icon" :space-evenly false
-    (button :class "button sound"
+    (button :class "button"
       :onclick "eww update volume_expanded=${!volume_expanded}"
       :onrightclick "pavucontrol; sleep 0.001;"
       (label
@@ -20,7 +20,7 @@
             (volume > 0) ? "padding-right: 11px;" :
             "padding-right: 2px;"
         }
-        :tooltip "Sound"
+        :tooltip "Áudio"
       )
     )
     (revealer :transition "slideright" :reveal {volume_expanded} :duration "500ms"

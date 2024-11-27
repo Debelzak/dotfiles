@@ -172,39 +172,43 @@ install_packages_arch() {
     # Lista de pacotes a serem instalados
     packages=(
         polkit-gnome
-        pkg-config              # eww build
-        gcc                     # eww build
-        cargo-nightly           # eww build
-        libdbusmenu-gtk3        # eww build
-        gtk3                    # eww runtime
-        gtk-layer-shell         # eww runtime (wayland)
-        socat                   # hyprland & eww req
-        hyprland                # wayland wm
-        hyprpaper               # wallpaper
-        nwg-look                # theme selector
-        gnome-themes-extra      # Adwaita themes
+        pkg-config                  # eww build
+        gcc                         # eww build
+        cargo-nightly               # eww build
+        libdbusmenu-gtk3            # eww build
+        gtk3                        # eww runtime
+        gtk-layer-shell             # eww runtime (wayland)
+        socat                       # hyprland & eww req
+        hyprland                    # wayland wm
+        hyprpaper                   # wallpaper
+        nwg-look                    # theme selector
+        gnome-themes-extra          # Adwaita themes
+        breeze                      # Breeze themes
         mesa
-        alacritty               # Terminal Emulator
-        git                     # CORE
-        rofi-wayland            # Launcher
-        dunst                   # Notifications Popup
-        noto-fonts              # Fonts
-        noto-fonts-cjk          # Unicode font / Japanese
-        ttf-vlgothic            # Unicode font / Japanese
-        ttf-font-awesome        # Font Awesome
-        nodejs                  # Eww Weather
-        npm                     # Eww Weather
-        pavucontrol             # Eww Sound
-        alsa-utils              # Eww Sound
-        flameshot               # Print Screen
-        nautilus                # File explorer
-        zsh                     # Shell
-        jq                      # Json management
-        gdm                     # Login screen
-        grim                    # Lock Screen
-        imagemagick             # Lock Screen
-        swaylock                # Lock Screen
-        playerctl               # Follow media playing
+        alacritty                   # Terminal Emulator
+        git                         # CORE
+        rofi-wayland                # Launcher
+        dunst                       # Notifications Popup
+        noto-fonts                  # Fonts
+        noto-fonts-cjk              # Unicode font / Japanese
+        ttf-vlgothic                # Unicode font / Japanese
+        ttf-font-awesome            # Font Awesome
+        nodejs                      # Eww Weather
+        npm                         # Eww Weather
+        pavucontrol                 # Eww Sound
+        alsa-utils                  # Eww Sound
+        flameshot                   # Print Screen
+        slurp                       # Print Screen
+        nautilus                    # File explorer
+        zsh                         # Shell
+        jq                          # Json management
+        grim                        # Lock Screen
+        imagemagick                 # Lock Screen
+        swaylock                    # Lock Screen
+        playerctl                   # Follow media playing
+        xdg-desktop-portal-gtk      # xdg
+        xdg-desktop-portal-hyprland # xdg
+        xdg-utils                   # xdg
     )
 
     # Loop para instalar cada pacote
@@ -331,6 +335,13 @@ dunst() {
     create_links "$source_dir" "$target_dir"
 }
 
+flameshot() {
+    source_dir="$install_dir/config/flameshot"
+    target_dir="$HOME/.config/flameshot"
+
+    create_links "$source_dir" "$target_dir"
+}
+
 ##### Tasks
 pre_install() {
     # Create and enters diretory
@@ -393,23 +404,13 @@ install() {
     dunst
     zsh
     zshrc
+    flameshot
 }
 
 post_install() {
     echo -e "${GREEN}Instalação realizada com sucesso!${NC}";
     echo -e "${GREEN}Inicialize a sessão com o comando: Hyprland${NC}";
-
-    prompt "Iniciar interface gráfica automaticamente ao ligar o computador? [Y/n]: "
-    read continue
-    if [ "$continue" != "n" ]; then
-        status_message "Habilitando serviço GDM..." "sudo systemctl enable gdm"
-    fi
-    
-    prompt "Iniciar interface gráfica agora? [Y/n]: "
-    read continue
-    if [ "$continue" != "n" ]; then
-        status_message "Inicializando serviço GDM..." "sudo systemctl restart gdm"
-    fi
+    echo -e "${GREEN}Não se esqueça de adicionar suas informações em [~/.config/hypr/.env.conf] (Ref: ~/.config/hypr/.env.conf.example)${NC}";
 }
 
 pre_install

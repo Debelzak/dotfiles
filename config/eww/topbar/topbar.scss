@@ -34,10 +34,6 @@
     background-color: $button_active;
 }
 
-//.topbar .focused_window {
-    //margin-left: 5px;
-//}
-
 .topbar .tray_icon {
     color: $text_clearest;
 }
@@ -56,21 +52,6 @@
 .topbar .system_resources {
     padding-right: 10px;
     padding-left: 10px;
-}
-
-.topbar .system_tray_button{
-    border-radius: 4px;
-}
-
-.topbar .system_tray {
-    padding-right: 5px;
-    padding-left: 5px;
-}
-
-.topbar .system_tray menuitem {
-    margin-top: 1px;
-    border-radius: 7px;
-    padding: 5px;
 }
 
 .topbar .power_menu_buttons {

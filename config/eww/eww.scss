@@ -13,10 +13,9 @@
 
 .awesome_icon {
     font-family: "Font Awesome 6 Free";
-    font-size: 13pt;
+    font-size: 14pt;
     font-weight: bold;
 }
-
 
 .literal {
     all: unset;
@@ -34,8 +33,6 @@
     border-radius: 50px;
     min-height: 5px;
     min-width: 50px;
-    margin-left: 10px;
-    margin-right: 20px;
 }
 .metric scale trough highlight {
     all: unset;
@@ -49,15 +46,10 @@
     border-radius: 50px;
     min-height: 5px;
     min-width: 50px;
-    margin-left: 10px;
-    margin-right: 20px;
 }
 
 .button {
     all: unset;
-}
-
-.button {
     padding-left: .75rem;
     padding-right: .75rem;
     border-radius: 4px;

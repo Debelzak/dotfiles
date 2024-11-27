@@ -1,15 +1,22 @@
-(defpoll weather_status :initial '{"glyph":"","main":{"temp":"..."}}' :interval "600s" "scripts/getweather")
+(defpoll weather_status :initial '{"glyph":"","current":{"Temperature":{"Metric":{"Value":"..."}}}}' :interval "60s" "scripts/getweather")
 (defwidget weather []
-  (button :class "button" :onclick "xdg-open https://www.google.com/search?q=clima"
+  (button :class "button" :onclick "xdg-open \"https://www.google.com/search?q=weather ${weather_status.location.LocalizedName} ${weather_status.location.AdministrativeArea.LocalizedName} ${weather_status.location.Country.LocalizedName}\""
     (box :class "weather"
       (label :class "awesome_icon"
-        :tooltip {weather_status.weather[0].main}
-        :text {weather_status.glyph})
+        :tooltip {weather_status.current.WeatherText}
+        :text {weather_status.glyph}
+      )
       (label
         :tooltip 
-  "Real Feel: ${round(weather_status.main.feels_like, 0)}°C
-  ▲${round(weather_status.main.temp_max, 0)}°C ▼${round(weather_status.main.temp_min, 0)}°C"
-        :text {(weather_status.main.temp != "...") ? "${round(weather_status.main.temp, 0)}°C" : ""})
+'${weather_status.location.LocalizedName}, ${weather_status.location.AdministrativeArea.LocalizedName} - ${weather_status.location.Country.LocalizedName}
+Sens. Térm. — ${round(weather_status.current.RealFeelTemperature.Metric.Value, 0)}°C (${weather_status.current.RealFeelTemperature.Metric.Phrase})
+▲${round(weather_status.forecast.DailyForecasts[0].Temperature.Maximum.Value, 0)}°C ▼${round(weather_status.forecast.DailyForecasts[0].Temperature.Minimum.Value, 0)}°C
+
+${weather_status.forecast.Headline.Text}'
+        :text {
+          (weather_status.current.Temperature.Metric.Value != "...") ? "${round(weather_status.current.Temperature.Metric.Value, 0)}°C" : ""
+        }
+      )
     )
   )
 )

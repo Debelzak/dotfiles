@@ -1,7 +1,7 @@
 (defvar power_menu_expanded false)
 (defwidget power_menu []
-  (box :class "power_menu" :space-evenly false
-    (button :class "button tray_icon" 
+  (box :class "tray_icon power_menu" :space-evenly false
+    (button :class "button" 
       :tooltip {
         (power_menu_expanded) ? "Cancelar" : "Energia"
       } 

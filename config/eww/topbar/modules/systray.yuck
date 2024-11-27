@@ -1,13 +1,13 @@
 (defvar systray_expanded true)
 (defwidget system_tray []
-  (box :class "system_tray_button" :space-evenly false :halign "start"
+  (box :class "systray" :space-evenly false :halign "start"
     (revealer :transition "slideleft" :reveal {systray_expanded} :duration "500ms"
       (box :class "system_tray"
-        (systray :pack-direction "left" :icon-size 18 :spacing 8)
+        (systray :pack-direction "left" :icon-size 18 :spacing 5)
       )
     )
-    (button :class "button tray_icon" :tooltip {(systray_expanded) ? "Hide Tray" : "Show Tray"} :onclick "eww update systray_expanded=${!systray_expanded}"
-      (label :class "awesome_icon" :text {(systray_expanded) ? "" : ""})
+    (button :class "button system_tray_button" :width 40 :onclick "eww update systray_expanded=${!systray_expanded}"
+      (label :style "font-size:10pt;" :class "awesome_icon" :text {(systray_expanded) ? "" : ""} :tooltip {(systray_expanded) ? "Esconder Bandeja" : "Expandir Bandeja"})
     )
   )
 )

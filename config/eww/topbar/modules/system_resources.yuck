@@ -1,7 +1,7 @@
 (defwidget system_resources []
   (box :class "system_resources" :orientation "h" :space-evenly false :halign "end" :spacing 5
-    (label :class "awesome_icon" :text "" :tooltip "CPU Usage") (label :class "label" :text "${round(EWW_CPU.avg, 0)}%")
-    (label :class "awesome_icon" :text "" :tooltip "CPU Temp") (label :class "label" :text "${round(EWW_TEMPS.K10TEMP_TCTL, 0)}°C")
-    (label :class "awesome_icon" :text "" :tooltip "RAM Usage") (label :class "label" :text {(EWW_RAM.used_mem >= 1073741824) ? "${round((EWW_RAM.used_mem / 1024 / 1024 / 1024), 2)} GiB" : "${round((EWW_RAM.used_mem / 1024 / 1024), 0)} MiB"})
+    (label :class "awesome_icon" :text "" :tooltip "Uso da CPU") (label :class "label" :text "${round(EWW_CPU.avg, 0)}%")
+    (label :class "awesome_icon" :text "" :tooltip "Temperatura da CPU") (label :class "label" :text "${round(EWW_TEMPS.K10TEMP_TCTL, 0)}°C")
+    (label :class "awesome_icon" :text "" :tooltip "Uso de RAM") (label :class "label" :text {(EWW_RAM.used_mem >= 1073741824) ? "${round((EWW_RAM.used_mem / 1024 / 1024 / 1024), 2)} GiB" : "${round((EWW_RAM.used_mem / 1024 / 1024), 0)} MiB"})
   )
 )
