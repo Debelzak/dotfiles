@@ -197,12 +197,12 @@ install_packages_arch() {
         npm                         # Eww Weather
         pavucontrol                 # Eww Sound
         alsa-utils                  # Eww Sound
-        flameshot                   # Print Screen
         slurp                       # Print Screen
+        grim                        # Print Screen
+        wl-clipboard                # Print Screen
         nautilus                    # File explorer
         zsh                         # Shell
         jq                          # Json management
-        grim                        # Lock Screen
         imagemagick                 # Lock Screen
         swaylock                    # Lock Screen
         playerctl                   # Follow media playing
@@ -213,10 +213,10 @@ install_packages_arch() {
 
     # Loop para instalar cada pacote
     for package in "${packages[@]}"; do
-        status_message "Instalando pacote ${package}..." "sudo pacman -Sq --noconfirm $package"
+        status_message "Instalando pacote ${package}..." "sudo pacman -Sq --needed --noconfirm $package"
     done
 
-    message "success" "Todos os pacotes foram instalados com sucesso!"
+    message "success" "Todas as dependências foram instalados com sucesso!"
 }
 
 create_links() {
@@ -335,13 +335,6 @@ dunst() {
     create_links "$source_dir" "$target_dir"
 }
 
-flameshot() {
-    source_dir="$install_dir/config/flameshot"
-    target_dir="$HOME/.config/flameshot"
-
-    create_links "$source_dir" "$target_dir"
-}
-
 ##### Tasks
 pre_install() {
     # Create and enters diretory
@@ -404,7 +397,6 @@ install() {
     dunst
     zsh
     zshrc
-    flameshot
 }
 
 post_install() {

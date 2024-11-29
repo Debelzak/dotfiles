@@ -1,5 +1,8 @@
 # See dunst(5) for all configuration options
 [global]
+    ### Event script
+    script = ~/.config/dunst/notification_event.sh
+
     ### Display ###
 
     # Which monitor should the notifications be displayed on.

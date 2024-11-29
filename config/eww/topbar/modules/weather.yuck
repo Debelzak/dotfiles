@@ -1,10 +1,9 @@
-(defpoll weather_status :initial '{"glyph":"","current":{"Temperature":{"Metric":{"Value":"..."}}}}' :interval "60s" "scripts/getweather")
 (defwidget weather []
   (button :class "button" :onclick "xdg-open \"https://www.google.com/search?q=weather ${weather_status.location.LocalizedName} ${weather_status.location.AdministrativeArea.LocalizedName} ${weather_status.location.Country.LocalizedName}\""
     (box :class "weather"
       (label :class "awesome_icon"
         :tooltip {weather_status.current.WeatherText}
-        :text {weather_status.glyph}
+        :text {weather_status.current.glyph}
       )
       (label
         :tooltip 

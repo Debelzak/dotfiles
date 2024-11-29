@@ -1,3 +1,15 @@
+;; Globals
+(defpoll weather_status :initial '{"current":{"glyph":"","Temperature":{"Metric":{"Value":"..."}}}}' :interval "60s" "scripts/getweather")
+
+(defpoll date :interval "5s"
+  :initial '{"day_number":"","day_of_week":"","day_of_week_full":"","month":"","month_name":"","month_name_full":"","year":"","hour":"","minute":"","second":""}'
+  `date +'{"day_number":"%d","day_of_week":"%a","day_of_week_full":"%A","month":"%q","month_name":"%b","month_name_full":"%B","year":"%Y","hour":"%H","minute":"%M","second":"%S"}'`
+)
+
+(defpoll notification_status :initial '{}' :interval "5s" `scripts/getnotifications`)
+(defpoll notification_count :initial 0 :interval "5s" `dunstctl count history`)
+(defpoll player :initial "No players found" :interval "1s" "scripts/player")
+
 ;; Components
 (include "components/metric.yuck")
 (include "components/closer.yuck")

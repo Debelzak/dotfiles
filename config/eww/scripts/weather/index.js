@@ -1,5 +1,5 @@
 // Config
-const forecastIntervalMin = 60;    // Forecast reload interval in 1h
+const forecastIntervalMin = 6*60;    // Forecast reload interval in 6h
 const conditionIntervalMin = 60;   // Condition reload interval in 1h
 const apiKey = process.env._EWW_WEATHER_API_KEY;
 const location = process.env._EWW_WEATHER_LOCATION;
@@ -220,32 +220,32 @@ const AccuWeather = async() => {
         6: "\uf6c4",  // Mostly Cloudy                (D)
         7: "\uf0c2",  // Cloudy                   
         8: "\uf0c2",  // Dreary (Overcast)        
-        11: "\uf73f", // Fog                      
-        12: "\uf73e", // Showers                  
+        11: "\uf75f", // Fog                      
+        12: "\uf740", // Showers                  
         13: "\uf743", // Mostly Cloudy w/ Showers     (D)
         14: "\uf743", // Partly Sunny w/ Showers      (D)
         15: "\uf76c", // T-Storms                 
         16: "\uf76c", // Mostly Cloudy w/ T-Storms    (D)
         17: "\uf76c", // Partly Sunny w/ T-Storms     (D)
-        18: "\uf73e", // Rain                         
-        19: "\uf73e", // Flurries                     
+        18: "\uf740", // Rain                         
+        19: "\uf740", // Flurries                     
         20: "\uf743", // Mostly Cloudy w/ Flurries    (D)
         21: "\uf743", // Partly Sunny w/ Flurries     (D)
         22: "\uf2dc", // Snow                         
         23: "\uf2dc", // Mostly Cloudy w/ Snow        (D)
-        24: "\uf9ad", // Ice                          
-        25: "\uf2dc", // Sleet                        
-        26: "\uf73e", // Freezing Rain                           
-        29: "\uf73e", // Rain and Snow                          
-        30: "\uf040", // Hot                                                 
-        31: "\uf03f", // Cold                         
+        24: "\uf7ad", // Ice                          
+        25: "\uf7ad", // Sleet                        
+        26: "\uf740", // Freezing Rain                           
+        29: "\uf740", // Rain and Snow                          
+        30: "\ue040", // Hot                                                 
+        31: "\ue03f", // Cold                         
         32: "\uf72e", // Windy                        
         33: "\uf186", // Clear                        (N)
-        34: "\uf78b", // Mostly Clear                 (N)
-        35: "\uf78b", // Partly Cloudy                (N)
-        36: "\uf78b", // Intermittent Clouds          (N)
-        37: "\uf78b", // Hazy Moonlight               (N)
-        38: "\uf78b", // Mostly Cloudy                (N)
+        34: "\uf6c3", // Mostly Clear                 (N)
+        35: "\uf6c3", // Partly Cloudy                (N)
+        36: "\uf6c3", // Intermittent Clouds          (N)
+        37: "\uf6c3", // Hazy Moonlight               (N)
+        38: "\uf6c3", // Mostly Cloudy                (N)
         39: "\uf73c", // Partly Cloudy w/ Showers     (N)
         40: "\uf73c", // Mostly Cloudy w/ Showers     (N)
         41: "\uf76c", // Partly Cloudy w/ T-Storms    (N)
@@ -279,11 +279,13 @@ const AccuWeather = async() => {
         }
 
         if (cur.lastLocationKey !== locationKey || Date.now() > new Date(cur.lastUpdate).getTime() + conditionIntervalMin * 60 * 1000) {
+            const updateCount = cur.updateCount ++ || 1
             const callUrl = `http://dataservice.accuweather.com/currentconditions/v1/${locationKey}?apikey=${apiKey}&details=true&language=${language}`;
             const request = await fetch(callUrl);
             const response = await request.json();
             cur = response[0];
             cur.lastUpdate = Date.now();
+            cur.updateCount = updateCount;
             cur.lastLocationKey = locationKey;
             saveFile('./accuweather/current.json', cur);
         }
@@ -300,12 +302,15 @@ const AccuWeather = async() => {
         }
 
         if (frc.lastLocationKey !== locationKey || Date.now() > new Date(frc.lastUpdate).getTime() + forecastIntervalMin * 60 * 1000) {
+            const updateCount = frc.updateCount ++ || 1
             const callUrl = `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}?apikey=${apiKey}&details=true&metric=true&language=${language}`;
             const request = await fetch(callUrl);
             const response = await request.json();
             frc = response;
             frc.lastUpdate = Date.now();
+            frc.updateCount = updateCount;
             frc.lastLocationKey = locationKey;
+            frc.updateCount = frc.updateCount ++ || 1
             saveFile('./accuweather/forecast.json', frc);
         }
 
@@ -317,7 +322,15 @@ const AccuWeather = async() => {
     weather.location = await loadLocation();
     weather.current = await loadCurrent(weather.location.Key);
     weather.forecast = await loadForecast(weather.location.Key);
-    weather.glyph = getGlyph(weather.current.WeatherIcon);
+
+    // Add Glyphs
+    for(const f of weather.forecast.DailyForecasts) {
+        f.DayNameShort = new Date(f.EpochDate*1000).toLocaleDateString(`${language}`, { weekday: 'short' })
+        f.Day.glyph = getGlyph(f.Day.Icon);
+        f.Night.glyph = getGlyph(f.Night.Icon);
+    }
+
+    weather.current.glyph = getGlyph(weather.current.WeatherIcon);
 
     console.log(JSON.stringify(weather));
 }

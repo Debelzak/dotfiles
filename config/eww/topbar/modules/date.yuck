@@ -1,7 +1,3 @@
-(defpoll date :interval "5s"
-  :initial '{"day_number":"","day_of_week":"","month":"","month_name":"","year":"","hour":"","minute":"","second":""}'
-  `date +'{"day_number":"%d","day_of_week":"%a","month":"%q","month_name":"%b","year":"%Y","hour":"%H","minute":"%M","second":"%S"}'`
-)
 (defwidget date []
   (box :class "date"
     (button :class "button" :onclick "eww open notifications-tray && eww open notifications-tray-closer"
