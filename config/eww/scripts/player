@@ -42,7 +42,7 @@ playPercent=$((position * 100 / length))
 
 # Define caminho para a imagem
 filename=$(basename "$imageUrl")
-filePath="/tmp/player-${filename}.png"
+filePath="/tmp/player-${filename}"
 if [ -z "$filename" ]; then
     filePath=""
 fi
@@ -62,7 +62,7 @@ echo '{
 }'
 
 # Baixa a imagem se ainda não existir
-if [ ! -z "$filepath" ]; then
+if [ ! -z "$filePath" ]; then
     if [ ! -e "$filePath" ]; then
         curl -s -o "$filePath" "$imageUrl"
     fi

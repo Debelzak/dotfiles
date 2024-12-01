@@ -18,3 +18,4 @@
 (include "topbar/topbar.yuck")
 (include "notifications/notifications-tray.yuck")
 (include "dialog/loading.yuck")
+(include "dialog/lock-screen.yuck")

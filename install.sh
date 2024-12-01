@@ -203,8 +203,6 @@ install_packages_arch() {
         nautilus                    # File explorer
         zsh                         # Shell
         jq                          # Json management
-        imagemagick                 # Lock Screen
-        swaylock                    # Lock Screen
         playerctl                   # Follow media playing
         xdg-desktop-portal-gtk      # xdg
         xdg-desktop-portal-hyprland # xdg

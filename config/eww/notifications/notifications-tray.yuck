@@ -134,7 +134,7 @@
                 (box :width 70 :height 70 :style "background-color: #1e1e2e; border-radius: 5px;"
                   (label :xalign 0.5 :yalign 0.5 :style "font-size: 24pt;" :text "")
                 )
-                (image :path {player.artUrl} :image-width 64 :image-height 64 :preserve-aspect-ratio false :visible {(player.artUrl) != "" ? true : false})
+                (image :path {player.artUrl} :image-width 64 :image-height 64 :preserve-aspect-ratio true :visible {(player.artUrl) != "" ? true : false})
               )
               (box :class "content" :orientation "vertical"
                 (label :class "title" :truncate true :xalign 0 :yalign 0.5 :text {player.title} :tooltip {player.title})

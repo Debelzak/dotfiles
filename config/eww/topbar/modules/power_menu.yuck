@@ -17,7 +17,7 @@
         (button :class "button" :tooltip "Logout" :onclick "killall -9 Hyprland"
           (label :class "awesome_icon" :text "")
         )
-        (button :class "button" :tooltip "Bloquear" :onclick "scripts/lockscreen; sleep 0.001"
+        (button :class "button" :tooltip "Bloquear" :onclick "hyprctl dispatch submap clean && eww open lock-screen; sleep 0.001"
           (label :class "awesome_icon" :text "")
         )
         (button :class "button suspend" :tooltip "Suspender" :onclick "systemctl suspend"

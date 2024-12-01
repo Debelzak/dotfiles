@@ -10,6 +10,7 @@
                       :anchor "top center")
   :exclusive false
   :focusable false
+  :namespace "eww-loading-dialog"
   (container)
 )
 

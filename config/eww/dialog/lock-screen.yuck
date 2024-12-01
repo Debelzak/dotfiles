@@ -1,0 +1,30 @@
+;; Window
+(defvar lockscreen-password-input "")
+(defvar lockscreen-message "")
+(defvar lockscreen-input-active true)
+(defwindow lock-screen
+  :monitor "0"
+  :stacking "overlay"
+  :geometry (geometry :x "-100%"
+                      :y "-100%"
+                      :width "200%"
+                      :height "200%"
+                      :anchor "center")
+  :exclusive false
+  :focusable true
+  :namespace "eww-lock-screen"
+  (container)
+)
+
+(defwidget container []
+  (box :class "container" :orientation "v"
+    (box :class "dialog" :halign "center" :valign "center" :orientation "v" :space-evenly false
+      (box :class "content" :orientation "v" :space-evenly false
+        (label :text "Senha")
+        (input :onchange "eww update lockscreen-password-input={}" :onaccept "exec scripts/unlock_session ${lockscreen-password-input}" :password true :active {lockscreen-input-active})
+        (label :text {lockscreen-message})
+        ;(button :onclick "exec scripts/unlock_session ${lockscreen-password-input}" :style "margin:50%;" "Desbloquear")
+      )
+    )
+  )
+)
