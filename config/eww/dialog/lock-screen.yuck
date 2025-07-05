@@ -3,7 +3,7 @@
 (defvar lockscreen-message "")
 (defvar lockscreen-input-active true)
 (defwindow lock-screen
-  :monitor "0"
+  :monitor 0
   :stacking "overlay"
   :geometry (geometry :x "-100%"
                       :y "-100%"

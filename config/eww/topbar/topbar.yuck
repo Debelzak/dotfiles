@@ -1,6 +1,6 @@
 ;; Window
 (defwindow topbar
-  :monitor "0"
+  :monitor 0
   :windowtype "dock" ;x11
   :stacking "bg"
   :geometry (geometry :x "0%"

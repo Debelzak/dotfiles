@@ -1,7 +1,7 @@
 ;; Window
 (defvar loading_dlg_message "Carregando...")
 (defwindow loading_dialog
-  :monitor "0"
+  :monitor 0
   :stacking "overlay"
   :geometry (geometry :x "-100%"
                       :y "-100%"
