@@ -3,5 +3,5 @@ opacity = 0.9
 padding = { x = 4, y = 4 }
 
 [font]
-normal = { family = "Monospace", style = "Regular" }
+normal = { family = "MesloLGS NF", style = "Regular" }
 size = 10 #11.25 default

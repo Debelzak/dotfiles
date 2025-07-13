@@ -164,3 +164,9 @@ source $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlig
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# To customize prompt, run `p10k configure` or edit ~/.local/share/zsh/.p10k.zsh.
+[[ ! -f ~/.local/share/zsh/.p10k.zsh ]] || source ~/.local/share/zsh/.p10k.zsh
+
+# To customize prompt, run `p10k configure` or edit ~/dotfiles/config/zsh/.p10k.zsh.
+[[ ! -f ~/dotfiles/config/zsh/.p10k.zsh ]] || source ~/dotfiles/config/zsh/.p10k.zsh
