@@ -47,6 +47,7 @@ async function watchProcesses() {
 
     for (const proc of processes) {
         const executableName = proc.cmd.toLowerCase();
+        console.log(proc.cmd);
         //console.log(executableName);
         for (const [name, id] of executablesMap) {
             if (executableName.includes(name)) {

@@ -1,19 +1,17 @@
 (defwidget weather []
-  (button :class "button" :onclick "xdg-open \"https://www.google.com/search?q=weather ${weather_status.location.LocalizedName} ${weather_status.location.AdministrativeArea.LocalizedName} ${weather_status.location.Country.LocalizedName}\""
+  (button :class "button" :onclick "xdg-open \"https://www.google.com/search?q=weather ${weather_status.location.name} ${weather_status.location.state} ${weather_status.location.country}\""
     (box :class "weather"
       (label :class "awesome_icon"
-        :tooltip {weather_status.current.WeatherText}
+        :tooltip {weather_status.current.weather[0].description}
         :text {weather_status.current.glyph}
       )
       (label
         :tooltip 
-'${weather_status.location.LocalizedName}, ${weather_status.location.AdministrativeArea.LocalizedName} - ${weather_status.location.Country.LocalizedName}
-Sens. Térm. — ${round(weather_status.current.RealFeelTemperature.Metric.Value, 0)}°C (${weather_status.current.RealFeelTemperature.Metric.Phrase})
-▲${round(weather_status.forecast.DailyForecasts[0].Temperature.Maximum.Value, 0)}°C ▼${round(weather_status.forecast.DailyForecasts[0].Temperature.Minimum.Value, 0)}°C
-
-${weather_status.forecast.Headline.Text}'
+'${weather_status.location.name}, ${weather_status.location.state} - ${weather_status.location.country}
+Sens. Térm. — ${round(weather_status.current.main.feels_like, 0)}°C
+▲${round(weather_status.forecast[0].max, 0)}°C ▼${round(weather_status.forecast[0].min, 0)}°C'
         :text {
-          (weather_status.current.Temperature.Metric.Value != "...") ? "${round(weather_status.current.Temperature.Metric.Value, 0)}°C" : ""
+          (weather_status.current.main.temp != "...") ? "${round(weather_status.current.main.temp, 0)}°C" : ""
         }
       )
     )

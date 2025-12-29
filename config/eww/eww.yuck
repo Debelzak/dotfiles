@@ -1,5 +1,5 @@
 ;; Globals
-(defpoll weather_status :initial '{"current":{"glyph":"","Temperature":{"Metric":{"Value":"..."}}}}' :interval "60s" "scripts/getweather")
+(defpoll weather_status :initial '{"current":{"glyph":"","main":{"temp":"..."}}}' :interval "60s" "scripts/getweather")
 
 (defpoll date :interval "5s"
   :initial '{"day_number":"","day_of_week":"","day_of_week_full":"","month":"","month_name":"","month_name_full":"","year":"","hour":"","minute":"","second":""}'

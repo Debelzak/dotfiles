@@ -6,8 +6,8 @@
         (systray :pack-direction "left" :icon-size 18 :spacing 5)
       )
     )
-    (button :class "button system_tray_button" :width 40 :onclick "eww update systray_expanded=${!systray_expanded}"
-      (label :style "font-size:10pt;" :class "awesome_icon" :text {(systray_expanded) ? "" : ""} :tooltip {(systray_expanded) ? "Esconder Bandeja" : "Expandir Bandeja"})
+    (button :class "button system_tray_button" :width 38 :onclick "eww update systray_expanded=${!systray_expanded}"
+      (label :style "font-size:10pt;" :class "awesome_icon" :text {(systray_expanded) ? "" : ""} :tooltip {(systray_expanded) ? "Recolher Bandeja" : "Expandir Bandeja"})
     )
   )
 )

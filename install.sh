@@ -171,6 +171,9 @@ install_packages_arch() {
     # Lista de pacotes a serem instalados
     packages=(
         polkit-gnome
+        gnome-keyring
+        libsecret
+        nautilus                    # File explorer
         pkg-config                  # eww build
         gcc                         # eww build
         cargo-nightly               # eww build
@@ -199,7 +202,6 @@ install_packages_arch() {
         slurp                       # Print Screen
         grim                        # Print Screen
         wl-clipboard                # Print Screen
-        nautilus                    # File explorer
         zsh                         # Shell
         jq                          # Json management
         playerctl                   # Follow media playing
@@ -398,10 +400,11 @@ install() {
 
 post_install() {
     echo -e "${GREEN}Instalação realizada com sucesso!${NC}";
-    echo -e "${GREEN}Inicialize a sessão com o comando: Hyprland${NC}";
+    echo -e "${GREEN}Inicialize a sessão com o comando: hyprland${NC}";
     echo -e "${GREEN}Não se esqueça de adicionar suas informações em [~/.config/hypr/.env.conf] (Ref: ~/.config/hypr/.env.conf.example)${NC}";
 }
 
 pre_install
 install
 post_install
+exit 0

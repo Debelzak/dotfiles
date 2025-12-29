@@ -75,51 +75,51 @@
         (calendar :halign "center")
       )
 
-      (button :class "weather" :onclick "xdg-open \"https://www.google.com/search?q=weather ${weather_status.location.LocalizedName} ${weather_status.location.AdministrativeArea.LocalizedName} ${weather_status.location.Country.LocalizedName}\" && eww close notifications-tray && eww close notifications-tray-closer"
+      (button :class "weather" :visible "true" :onclick "xdg-open \"https://www.google.com/search?q=weather ${weather_status.location.name} ${weather_status.location.state} ${weather_status.location.country}\" && eww close notifications-tray && eww close notifications-tray-closer"
         (box :orientation "vertical" :space-evenly false :visible true
           (box :class "header"
             (label :text "Clima" :halign "start")
-            (label :class "region-name" :text "${weather_status.location.LocalizedName}" :halign "end")
+            (label :class "region-name" :text "${weather_status.location.name}" :halign "end")
           )
           (box :class "forecast"
             (box :class "element" :orientation "vertical"
               (label :class "day" :text "hoje")
-              (label :class "awesome_icon glyph" :text "${weather_status.forecast.DailyForecasts[0].Day.glyph}" :tooltip "${weather_status.forecast.DailyForecasts[0].Day.IconPhrase}")
+              (label :class "awesome_icon glyph" :text "${weather_status.forecast[0].glyph}" :tooltip "${weather_status.forecast[0].description}")
               (box :halign "center" :class "temp"
-                (label :class "max" :text "${round(weather_status.forecast.DailyForecasts[0].Temperature.Maximum.Value, 0)}°")
-                (label :class "min" :text "${round(weather_status.forecast.DailyForecasts[0].Temperature.Minimum.Value, 0)}°")
+                (label :class "max" :text "${round(weather_status.forecast[0].max, 0)}°")
+                (label :class "min" :text "${round(weather_status.forecast[0].min, 0)}°")
               )
             )
             (box :class "element" :orientation "vertical"
-              (label :class "day" :text {weather_status.forecast.DailyForecasts[1].DayNameShort})
-              (label :class "awesome_icon glyph" :text "${weather_status.forecast.DailyForecasts[1].Day.glyph}" :tooltip "${weather_status.forecast.DailyForecasts[1].Day.IconPhrase}")
+              (label :class "day" :text {weather_status.forecast[1].dayNameShort})
+              (label :class "awesome_icon glyph" :text "${weather_status.forecast[1].glyph}" :tooltip "${weather_status.forecast[1].description}")
               (box :halign "center" :class "temp"
-                (label :class "max" :text "${round(weather_status.forecast.DailyForecasts[1].Temperature.Maximum.Value, 0)}°")
-                (label :class "min" :text "${round(weather_status.forecast.DailyForecasts[1].Temperature.Minimum.Value, 0)}°")
+                (label :class "max" :text "${round(weather_status.forecast[1].max, 0)}°")
+                (label :class "min" :text "${round(weather_status.forecast[1].min, 0)}°")
               )
             )
             (box :class "element" :orientation "vertical"
-              (label :class "day" :text {weather_status.forecast.DailyForecasts[2].DayNameShort})
-              (label :class "awesome_icon glyph" :text "${weather_status.forecast.DailyForecasts[2].Day.glyph}" :tooltip "${weather_status.forecast.DailyForecasts[2].Day.IconPhrase}")
+              (label :class "day" :text {weather_status.forecast[2].dayNameShort})
+              (label :class "awesome_icon glyph" :text "${weather_status.forecast[2].glyph}" :tooltip "${weather_status.forecast[2].description}")
               (box :halign "center" :class "temp"
-                (label :class "max" :text "${round(weather_status.forecast.DailyForecasts[2].Temperature.Maximum.Value, 0)}°")
-                (label :class "min" :text "${round(weather_status.forecast.DailyForecasts[2].Temperature.Minimum.Value, 0)}°")
+                (label :class "max" :text "${round(weather_status.forecast[2].max, 0)}°")
+                (label :class "min" :text "${round(weather_status.forecast[2].min, 0)}°")
               )
             )
             (box :class "element" :orientation "vertical"
-              (label :class "day" :text {weather_status.forecast.DailyForecasts[3].DayNameShort})
-              (label :class "awesome_icon glyph" :text "${weather_status.forecast.DailyForecasts[3].Day.glyph}" :tooltip "${weather_status.forecast.DailyForecasts[3].Day.IconPhrase}")
+              (label :class "day" :text {weather_status.forecast[3].dayNameShort})
+              (label :class "awesome_icon glyph" :text "${weather_status.forecast[3].glyph}" :tooltip "${weather_status.forecast[3].description}")
               (box :halign "center" :class "temp"
-                (label :class "max" :text "${round(weather_status.forecast.DailyForecasts[3].Temperature.Maximum.Value, 0)}°")
-                (label :class "min" :text "${round(weather_status.forecast.DailyForecasts[3].Temperature.Minimum.Value, 0)}°")
+                (label :class "max" :text "${round(weather_status.forecast[3].max, 0)}°")
+                (label :class "min" :text "${round(weather_status.forecast[3].min, 0)}°")
               )
             )
             (box :class "element" :orientation "vertical"
-              (label :class "day" :text {weather_status.forecast.DailyForecasts[4].DayNameShort})
-              (label :class "awesome_icon glyph" :text "${weather_status.forecast.DailyForecasts[4].Day.glyph}" :tooltip "${weather_status.forecast.DailyForecasts[4].Day.IconPhrase}")
+              (label :class "day" :text {weather_status.forecast[4].dayNameShort})
+              (label :class "awesome_icon glyph" :text "${weather_status.forecast[4].glyph}" :tooltip "${weather_status.forecast[4].description}")
               (box :halign "center" :class "temp"
-                (label :class "max" :text "${round(weather_status.forecast.DailyForecasts[4].Temperature.Maximum.Value, 0)}°")
-                (label :class "min" :text "${round(weather_status.forecast.DailyForecasts[4].Temperature.Minimum.Value, 0)}°")
+                (label :class "max" :text "${round(weather_status.forecast[4].max, 0)}°")
+                (label :class "min" :text "${round(weather_status.forecast[4].min, 0)}°")
               )
             )
           )
