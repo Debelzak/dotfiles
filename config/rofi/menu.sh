@@ -19,9 +19,12 @@ find_icon() {
     if [[ "$class" == steam_app_* ]]; then
         local steam_dir="$HOME/.steam/steam/appcache/librarycache"
         local app_id="${class#steam_app_}"
-        local icon_path="${steam_dir}/${app_id}_icon.jpg"
-
-        [[ -f "$icon_path" ]] && icon="$icon_path"
+        local app_dir="${steam_dir}/${app_id}"
+        
+        # Busca o arquivo .jpg com menor tamanho (que é o ícone)
+        if [[ -d "$app_dir" ]]; then
+            icon=$(find "$app_dir" -type f -name "*.jpg" -printf '%s %p\n' 2>/dev/null | sort -n | head -n 1 | awk '{print $2}')
+        fi
     else
     # Common app
         # Gerar os diretórios montados dinamicamente

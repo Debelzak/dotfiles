@@ -8,7 +8,7 @@
       (label :class "awesome_icon" :text "") (label :class "label" :text "${round(EWW_TEMPS.K10TEMP_TCTL, 0)}°C")
     )
     (box :space-evenly false :spacing 4 :tooltip "Uso de RAM"
-      (label :class "awesome_icon" :text "") (label :class "label" :text {(EWW_RAM.used_mem >= 1073741824) ? "${round((EWW_RAM.used_mem / 1024 / 1024 / 1024), 2)} GiB" : "${round((EWW_RAM.used_mem / 1024 / 1024), 0)} MiB"})
+      (label :class "awesome_icon" :text "") (label :class "label" :text {(EWW_RAM.used_mem >= 1073741824) ? "${round((EWW_RAM.used_mem / 1024 / 1024 / 1024), 1)} GiB" : "${round((EWW_RAM.used_mem / 1024 / 1024), 0)} MiB"})
     )
     (box :space-evenly false :spacing 4 :tooltip "Temperatura da GPU"
       (label :class "awesome_icon" :text "") (label :class "label" :text "${gputemp}°C")

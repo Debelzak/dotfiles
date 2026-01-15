@@ -2,6 +2,7 @@
 import hashlib
 import os
 import contextlib
+import json
 import dbus
 import gi
 
@@ -84,7 +85,7 @@ def message_callback(_, message):
         # does not change unless I restart spotify but, the song title
         # (body / summary) change gets picked up.
         details["icon_path"] = save_img_byte(args_list[6]["image-data"])
-    print(details) # DEBUG
+    print(json.dumps(details))
 
 
 DBusGMainLoop(set_as_default=True)

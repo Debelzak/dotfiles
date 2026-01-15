@@ -14,7 +14,7 @@
     )
     (revealer :transition "slideright" :reveal {power_menu_expanded} :duration "500ms"
       (box :class "power_menu_buttons"
-        (button :class "button" :tooltip "Logout" :onclick "killall -9 Hyprland"
+        (button :class "button" :tooltip "Encerrar sessão" :onclick "hyprctl dispatch exit"
           (label :class "awesome_icon" :text "")
         )
         (button :class "button" :tooltip "Bloquear" :onclick "hyprctl dispatch submap clean && eww open lock-screen; sleep 0.001"

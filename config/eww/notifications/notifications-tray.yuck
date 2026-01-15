@@ -28,17 +28,22 @@
       )
       (scroll :class "notifications" :hscroll false :vscroll true :height "630" :visible {(notification_count > 0) ? "true" : "false"}
         (box :orientation "vertical" :space-evenly false
-          (for notification in "${notification_status.data[0]}"
+          (for notification in "${notification_status}"
             (box :class "element" :space-evenly false
               (eventbox :class "btn"
                 (box :class "container" :space-evenly false
-                  (box :width 70 :height 70 :style "background-color: #1e1e2e; border-radius: 5px;"
-                    (label :xalign 0.5 :yalign 0.5 :style "font-size: 18pt;" :text "")
+                  (box
+                    (overlay :valign "start"
+                      (box :width 70 :height 70 :style "background-color: #1e1e2e; border-radius: 5px;"
+                        (label :xalign 0.5 :yalign 0.5 :style "font-size: 24pt;" :text "")
+                      )
+                      (image :path {notification.icon_path} :image-width 64 :image-height 64 :preserve-aspect-ratio true :visible {(player.artUrl) != "" ? true : false})
+                    )
                   )
                   (box :class "content" :orientation "vertical" :space-evenly false
                     (box :class "title" :orientation "horizontal" :space-evenly false
-                      (label :halign "start" :truncate true :text {notification.summary.data} :tooltip {notification.summary.data})
-                      (label :halign "start" :text "Agora mesmo" :style "padding-left:10px; font-size:8pt; font-weight: normal;")
+                      (label :halign "start" :truncate true :text {notification.summary} :tooltip {notification.summary})
+                      (label :halign "start" :text {notification.datetime} :style "padding-left:10px; font-size:8pt; font-weight: normal;")
                     )
                     (label
                       :class "body"
@@ -46,11 +51,11 @@
                       :yalign 0
                       :wrap true
                       :unindent true
-                      :text {notification.body.data}
-                      :tooltip {notification.body.data}
+                      :text {notification.body}
+                      :tooltip {notification.body}
                     )
                   )
-                  (button :class "delete" :halign "end" :valign "start" :width 20 :height 20 :onclick "dunstctl history-rm ${notification.id.data}"
+                  (button :class "delete" :halign "end" :valign "start" :width 20 :height 20 :onclick "dunstctl history-rm ${notification.id} && eww update notification_status=\"$(eww get notification_status | jq 'map(select(.id != \"${notification.id}\"))')\" && eww update notification_count=$((${notification_count} - 1))"
                     ""
                   )
                 )
@@ -61,7 +66,7 @@
       )
       (box :class "bottom-buttons" :visible {(notification_count > 0) ? "true" : "false"}
         (button :class "button" :height 50 :halign "start" :valign "end" :visible false "Button")
-        (button :class "button" :height 50 :halign "end" :valign "end" :onclick "dunstctl history-clear && eww update notification_count=0 && eww update notification_status='{\"data\":[[]]}'" "Limpar")
+        (button :class "button" :height 50 :halign "end" :valign "end" :onclick "dunstctl history-clear && eww update notification_count=0 && eww update notification_status='[]'" "Limpar")
       )
     )
     (box)

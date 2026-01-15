@@ -174,13 +174,13 @@ install_packages_arch() {
         gnome-keyring
         libsecret
         nautilus                    # File explorer
-        pkg-config                  # eww build
-        gcc                         # eww build
-        cargo-nightly               # eww build
-        libdbusmenu-gtk3            # eww build
-        gtk3                        # eww runtime
-        gtk-layer-shell             # eww runtime (wayland)
-        socat                       # hyprland & eww req
+#        pkg-config                  # eww build
+#        gcc                         # eww build
+#        cargo-nightly               # eww build
+#        libdbusmenu-gtk3            # eww build
+#        gtk3                        # eww runtime
+#        gtk-layer-shell             # eww runtime (wayland)
+#        socat                       # hyprland & eww req
         hyprland                    # wayland wm
         hyprpaper                   # wallpaper
         nwg-look                    # theme selector
@@ -306,30 +306,37 @@ wallpaper() {
     create_links "$source_dir" "$target_dir"
 }
 
-eww() {
-    # build
-    cd "$install_dir/eww/src"
-    status_message "Compilando eww. Isso deve levar um tempo..." "cargo build --release --no-default-features --features=x11,wayland"
-    status_message "Instalando eww..." "sudo install -vDm755 target/release/eww -t '/usr/bin/'"
-    cd "$install_dir"
+#eww() {
+#    # build
+#    cd "$install_dir/eww/src"
+#    status_message "Compilando eww. Isso deve levar um tempo..." "cargo build --release --no-default-features --features=x11,wayland"
+#    status_message "Instalando eww..." "sudo install -vDm755 target/release/eww -t '/usr/bin/'"
+#    cd "$install_dir"
+#
+#    # setup links
+#    source_dir="$install_dir/config/eww"
+#    target_dir="$HOME/.config/eww"
+#
+#    create_links "$source_dir" "$target_dir"
+#}
 
-    # setup links
-    source_dir="$install_dir/config/eww"
-    target_dir="$HOME/.config/eww"
+#rofi() {
+#    source_dir="$install_dir/config/rofi"
+#    target_dir="$HOME/.config/rofi"
+#
+#    create_links "$source_dir" "$target_dir"
+#}
 
-    create_links "$source_dir" "$target_dir"
-}
+#dunst() {
+#    source_dir="$install_dir/config/dunst"
+#    target_dir="$HOME/.config/dunst"
+#
+#    create_links "$source_dir" "$target_dir"
+#}
 
-rofi() {
-    source_dir="$install_dir/config/rofi"
-    target_dir="$HOME/.config/rofi"
-
-    create_links "$source_dir" "$target_dir"
-}
-
-dunst() {
-    source_dir="$install_dir/config/dunst"
-    target_dir="$HOME/.config/dunst"
+quickshell() {
+    source_dir="$install_dir/config/quickshell"
+    target_dir="$HOME/.config/quickshell"
 
     create_links "$source_dir" "$target_dir"
 }
@@ -391,7 +398,8 @@ install() {
     alacritty
     hyprland
     wallpaper
-    eww
+#    eww
+    quickshell
     rofi
     dunst
     zsh

@@ -1,9 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
 # Config
 workspace_entries=("1" "2" "3" "4" "5" "6" "7" "8" "9")
-workspace_names=("1" "2" "3" "4" "5" "6" "7" "8" "9")
-#workspace_names=("一" "二" "三" "四" "五" "六" "七" "八" "九")
+#workspace_names=("1" "2" "3" "4" "5" "6" "7" "8" "9")
+workspace_names=("Ⅰ" "Ⅱ" "Ⅲ" "Ⅳ" "Ⅴ" "Ⅵ" "Ⅶ" "Ⅷ" "Ⅸ") # Roman numerals
+#workspace_names=("一" "二" "三" "四" "五" "六" "七" "八" "九") # Japanese numerals
+#workspace_names=("α" "β" "γ" "δ" "ε" "ζ" "η" "θ" "ι") #Greek
+#workspace_names=("א", 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט') #Hebrew
 show_all_workspaces="0"
 
 # Runtime
