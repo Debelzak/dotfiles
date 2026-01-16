@@ -53,7 +53,7 @@ Rectangle {
                 PropertyChanges {
                     target: menuContainer
                     opacity: 0
-                    scale: 0.75
+                    scale: 1
                 }
             }
         ]
@@ -65,7 +65,6 @@ Rectangle {
 
                 ParallelAnimation {
                     NumberAnimation { properties: "opacity"; from: 0; to: 1; duration: 100; easing.type: Easing.OutCubic }
-                    NumberAnimation { properties: "scale"; from: 0.8; to: 1; duration: 100; easing.type: Easing.OutBack }
                 }
             },
 
@@ -75,7 +74,6 @@ Rectangle {
 
                 ParallelAnimation {
                     NumberAnimation { properties: "opacity"; from: 1; to: 0; duration: 100; easing.type: Easing.InCubic }
-                    NumberAnimation { properties: "scale"; from: 1; to: 0.8; duration: 100; easing.type: Easing.InBack }
                 }
 
                 onRunningChanged: {
@@ -97,6 +95,14 @@ Rectangle {
             menuContainer.x = root.openX - width / 2
         }
 
+        Behavior on height {
+            NumberAnimation {
+                duration: 200
+                easing.type: Easing.BezierSpline;
+                easing.bezierCurve: [0.2, 0, 0, 1, 1, 1]
+            }
+        }
+
         // Close blocker
         MouseArea {
             anchors.fill: parent
@@ -111,29 +117,29 @@ Rectangle {
 
             pushEnter: Transition {
                 ParallelAnimation {
-                    NumberAnimation { property: "x"; from: menuContainer.width; to: 0; duration: 150; easing.type: Easing.OutQuart }
-                    NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 150; }
+                    NumberAnimation { property: "x"; from: menuContainer.width; to: 0; duration: 200; easing.type: Easing.OutQuart }
+                    NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 200; }
                 }
             }
 
             pushExit: Transition {
                 ParallelAnimation {
-                    NumberAnimation { property: "x"; from: 0; to: -menuContainer.width; duration: 150; easing.type: Easing.InQuart }
-                    NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 150; }
+                    NumberAnimation { property: "x"; from: 0; to: -menuContainer.width; duration: 200; easing.type: Easing.InQuart }
+                    NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 200; }
                 }
             }
 
             popEnter: Transition {
                 ParallelAnimation {
-                    NumberAnimation { property: "x"; from: -menuContainer.width; to: 0; duration: 150; easing.type: Easing.OutQuart }
-                    NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 150 }
+                    NumberAnimation { property: "x"; from: -menuContainer.width; to: 0; duration: 200; easing.type: Easing.OutQuart }
+                    NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 200 }
                 }
             }
 
             popExit: Transition {
                 ParallelAnimation {
-                    NumberAnimation { property: "x"; from: 0; to: menuContainer.width; duration: 150; easing.type: Easing.InQuart }
-                    NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 150 }
+                    NumberAnimation { property: "x"; from: 0; to: menuContainer.width; duration: 200; easing.type: Easing.InQuart }
+                    NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 200 }
                 }
             }
 

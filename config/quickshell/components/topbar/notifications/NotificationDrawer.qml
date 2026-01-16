@@ -6,12 +6,11 @@ import QtQuick.Shapes
 
 Item {
     id: root
-    
     required property Item attachedTo
+
     readonly property int notificationItemWidth: 450
     readonly property int notificationItemHeight: 70
-    readonly property int padding: 5
-    readonly property int itemTotalHeight: notificationItemHeight + padding
+    readonly property int itemTotalHeight: notificationItemHeight + listView.spacing
 
     // Âncoras do container invisível
     anchors.horizontalCenter: attachedTo.horizontalCenter
@@ -20,6 +19,7 @@ Item {
     
     width: notificationItemWidth + 20
     height: background.height
+    z: -1
 
     Rectangle {
         id: background
@@ -31,15 +31,7 @@ Item {
         bottomRightRadius: 15
         clip: true
 
-        height: (listView.count * root.itemTotalHeight) + (listView.count > 0 ? root.padding : 0)
-
-        Behavior on height {
-            NumberAnimation {
-                duration: 400
-                easing.type: Easing.BezierSpline;
-                easing.bezierCurve: [0.2, 0, 0, 1, 1, 1]
-            }
-        }
+        height: (listView.contentHeight > 0) ? listView.contentHeight + 10 : 0
 
         ListView {
             id: listView
@@ -49,37 +41,30 @@ Item {
             height: 1080 // FIXME
             
             model: Notifications.popup
-            spacing: root.padding
+            spacing: 5
             interactive: false
             clip: false
-
-            delegate: NotificationItem { targetHeight: root.notificationItemHeight }
+            
+            delegate: NotificationItem {
+                targetWidth: root.notificationItemWidth;
+                targetHeight: root.notificationItemHeight;
+            }
 
             // --- TRANSIÇÕES ---
             add: Transition {
                 ParallelAnimation {
-                    //NumberAnimation {property: "x"; from: root.notificationItemWidth; to: 0; duration: 600; easing.type: Easing.BezierSpline; easing.bezierCurve: [0.2, 0, 0, 1, 1, 1] }
                     NumberAnimation {properties: "opacity"; from: 0; to: 1; duration: 400; easing.type: Easing.InCubic}
                 }
             }
             populate: add
             displaced: Transition {
                 ParallelAnimation {
-                    //NumberAnimation {property: "x"; to: 0; duration: 600; easing.type: Easing.BezierSpline; easing.bezierCurve: [0.2, 0, 0, 1, 1, 1] }
-                    NumberAnimation {properties: "y"; duration: 400; easing.type: Easing.BezierSpline; easing.bezierCurve: [0.2, 0, 0, 1, 1, 1]}
-                    NumberAnimation {properties: "opacity"; to: 1; duration: 400; easing.type: Easing.InCubic }
+                    NumberAnimation {property: "y"; duration: 400; easing.type: Easing.BezierSpline; easing.bezierCurve: [0.2, 0, 0, 1, 1, 1]}
+                    NumberAnimation {property: "opacity"; to: 1; duration: 400; easing.type: Easing.InCubic }
                 }
             }
             move: displaced
-            remove: Transition {
-                ParallelAnimation {
-                    //NumberAnimation { property: "y"; to: -root.notificationItemHeight; duration: 200 }
-                    NumberAnimation { property: "scale"; to: 0; duration: 400; easing.type: Easing.BezierSpline; easing.bezierCurve: [0.2, 0, 0, 1, 1, 1] }
-                    NumberAnimation { property: "opacity"; to: 0; duration: 400; easing.type: Easing.InCubic }
-                }
-            }
         }
-        
     }
 
     // Top left corner
@@ -170,7 +155,9 @@ Item {
 
     // Bloqueador de cliques
     MouseArea {
+        z: parent.z
         anchors.fill: background
         acceptedButtons: Qt.AllButtons
+        onClicked: {}
     }
 }

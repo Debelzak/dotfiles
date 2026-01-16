@@ -11,7 +11,8 @@ Singleton {
     readonly property ListModel popup: ListModel {}
     readonly property ListModel unread: ListModel {}
     readonly property ListModel all: ListModel {}
-
+    
+    property bool preventPopupRemoval: false
     property bool doNotDisturb: false
 
     component NotificationModel: QtObject {
@@ -34,13 +35,16 @@ Singleton {
         property bool resident;
         property var hints;
         property real expireTimeout;
-        property bool justPopped
+        property bool justPopped: false
 
         readonly property Timer timer: Timer {
             running: true
             interval: notificationObject.expireTimeout > 0 ? notificationObject.expireTimeout : 4_000
             onTriggered: {
-                notificationObject.removePopup()
+                if(!root.preventPopupRemoval)
+                    notificationObject.removePopup()
+                else
+                    restart()
             }
         }
 

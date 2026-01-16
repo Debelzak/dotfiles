@@ -6,7 +6,7 @@ Window {
     id: root
     property alias text: label.text
     property Item target
-    property int delay: 600
+    property int delay: 500
 
     flags: Qt.ToolTip | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
     color: "transparent"
@@ -20,7 +20,7 @@ Window {
             if (!root.target) return;
             root.updatePosition();
             root.visible = true;
-            root.opacity = 1;
+            background.opacity = 1;
         }
     }
 
@@ -31,6 +31,7 @@ Window {
         border.color: "#22888888"
         implicitWidth: label.implicitWidth + 20
         implicitHeight: label.implicitHeight + 20
+        opacity: 0
 
         Text {
             id: label
@@ -39,6 +40,10 @@ Window {
             font.family: Config.main_font
             font.weight: Font.Bold
             font.pixelSize: 13
+        }
+
+        Behavior on opacity {
+            NumberAnimation { target: background; property: "opacity"; duration: 200; easing.type: Easing.OutCubic }
         }
     }
 
@@ -50,6 +55,7 @@ Window {
     function hide() {
         showTimer.stop();
         root.visible = false;
+        background.opacity = 0
     }
 
     function updatePosition() {
